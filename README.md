@@ -17,7 +17,7 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 - **Minhas Listas**;
 ---
 
-## 👥 Participantes
+## 👥 Equipe responsável
 - Ana Luiza [GitHub](https://github.com/AnaLuiza2431)
 - Emily Pereira [GitHub](https://github.com/Emily2311)
 - Kerollayne Akemy [GitHub](https://github.com/KerollayneAkemy)
@@ -27,21 +27,22 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 
 ## ⚙️ Tecnologias utilizadas
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)  
-![React Native](https://img.shields.io/badge/React%20Native-61DAFB?logo=react&logoColor=black)  
-![NativeWind](https://img.shields.io/badge/NativeWind-38BDF8?logo=tailwindcss&logoColor=white)  
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white)  
-![Expo](https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=white)  
-![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)  
-![APIs](https://img.shields.io/badge/APIs-FF6F00?logo=api&logoColor=white) 
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
+[![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactnative.dev/)  
+[![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)  
+[![NativeWind](https://img.shields.io/badge/NativeWind-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://www.nativewind.dev/)  
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)  
+[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)  
+[![Lucide Icons](https://img.shields.io/badge/Lucide-000000?style=for-the-badge&logo=lucide&logoColor=white)](https://lucide.dev/)  
+[![APIs](https://img.shields.io/badge/APIs-FF6F00?style=for-the-badge&logo=api&logoColor=white)](#)  
+
 
 - **TypeScript** → tipagem estática e segurança no código  
 - **React Native** → desenvolvimento mobile multiplataforma  
-- **Expo** → ambiente simplificado para RN  
+- **Expo** → ambiente simplificado para RN (React Native)
 - **NativeWind + TailwindCSS** → estilização com suporte a modo claro/escuro  
 - **Supabase** → autenticação e banco de dados  
-- **Lucide-react-native** → ícones modernos e leves  
-- **APIs REST** → integração futura para dados externos  
+- **Lucide-react-native** → ícones modernos e leves
 
 ---
 
