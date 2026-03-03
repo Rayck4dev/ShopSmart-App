@@ -1,10 +1,8 @@
-# 📱 ShopSmart  
+## 📱 ShopSmart  
 
-
----
-
-## 📖 Descrição
 O **ShopSmart** é um aplicativo mobile desenvolvido em **React Native + Expo**, com autenticação via **Supabase** e estilização utilizando **NativeWind/TailwindCSS**.  
+
+--- 
 
 O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 - **Pages Introdutórias**; 
@@ -17,8 +15,6 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 - **Compras Anteriores**;
 - **Nova Lista**;
 - **Minhas Listas**;
-
-
 ---
 
 ## 👥 Participantes
