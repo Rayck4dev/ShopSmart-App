@@ -59,10 +59,10 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 ```bash
 git clone https://github.com/Rayck4dev/shopsmart.git
 cd ...
+```
 
 ---
-
-## 2. Instalar dependências
+### 2. Instalar dependências
 Após clonar o repositório, instale as dependências do projeto:
 
 ```bash
