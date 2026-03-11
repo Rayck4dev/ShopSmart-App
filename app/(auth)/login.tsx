@@ -4,74 +4,70 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Button from "@/src/components/Button";
 import GoogleButton from "@/src/components/GoogleButton";
 import Input from "@/src/components/Input";
-import { useAuth } from "@/src/hooks/useAuth";
 import Logo from "@/src/components/Logo";
 import { supabase } from "@/src/lib/supabaseClient";
-import { validateEmail, validatePassword } from "@/src/utils/validators";
 import { Eye, EyeOff } from "lucide-react-native";
 
 export default function Login() {
-  const { signIn, signInWithGoogle, loading } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     setError(null);
+    setLoading(true);
 
-    if (!email || !password) {
-      setError("Preencha todos os campos.");
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (loginError) {
+      setError(loginError.message);
+      setLoading(false);
       return;
     }
 
-    if (!validateEmail(email)) {
-      setError("Digite um e-mail válido.");
-      return;
-    }
+    const user = data.user;
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
 
-    if (!validatePassword(password)) {
-      setError("A senha deve ter pelo menos 6 caracteres.");
-      return;
-    }
-
-    const res = await signIn(email, password);
-    if (res.error) {
-      if (res.error.includes("Invalid login credentials")) {
-        setError("E-mail ou senha inválidos.");
+      if (!profile?.username) {
+        router.replace("/chooseusername");
       } else {
-        setError(res.error);
+        router.replace("/profile");
       }
-    } else {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    }
 
-      if (user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("id", user.id)
-          .single();
+    setLoading(false);
+  };
 
-        if (!profile?.username) {
-          router.push("../chooseusername");
-        } else {
-          router.push("../profile");
-        }
-      }
+  const handleGoogleLogin = async () => {
+    setError(null);
+
+    const { data, error: googleError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    if (googleError) {
+      setError(googleError.message);
+      return;
     }
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-light-background dark:bg-dark-background px-6">
+    <View className="flex-1 items-center justify-center bg-light-background px-6">
       <Logo />
 
-      <Text className="text-light-text dark:text-dark-text text-lg mb-6">
-        Bem-vindo!
-      </Text>
+      <Text className="text-light-text text-lg mb-6">Bem-vindo!</Text>
 
       <Input
         placeholder="E-mail"
@@ -83,7 +79,7 @@ export default function Login() {
       <View className="w-full mb-6 relative">
         <Input
           placeholder="Senha"
-          secureTextEntry={showPassword ? false : true}
+          secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
         />
@@ -106,11 +102,12 @@ export default function Login() {
         onPress={handleLogin}
         className="mb-4"
       />
-      <GoogleButton onPress={handleLogin} />
 
-      <Link href="../register" asChild>
+      <GoogleButton onPress={handleGoogleLogin} />
+
+      <Link href="/register" asChild>
         <TouchableOpacity>
-          <Text className="text-light-nav dark:text-dark-nav mt-6">
+          <Text className="text-light-nav mt-6">
             Ainda não tem conta? Cadastre-se
           </Text>
         </TouchableOpacity>

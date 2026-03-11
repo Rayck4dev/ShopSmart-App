@@ -4,23 +4,22 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Button from "@/src/components/Button";
 import GoogleButton from "@/src/components/GoogleButton";
 import Input from "@/src/components/Input";
-import { useAuth } from "@/src/hooks/useAuth";
 import Logo from "@/src/components/Logo";
+import { supabase } from "@/src/lib/supabaseClient";
 import { Eye, EyeOff } from "lucide-react-native";
 
 export default function Register() {
-  const { signUp, signInWithGoogle, loading } = useAuth();
-  const router = useRouter();
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const getPasswordStrength = (pwd: string) => {
     let score = 0;
@@ -37,7 +36,7 @@ export default function Register() {
   const handleRegister = async () => {
     setError(null);
 
-    if (!name || !email || !username || !password || !confirmPassword) {
+    if (!email || !password || !username || !name) {
       setError("Preencha todos os campos.");
       return;
     }
@@ -47,25 +46,39 @@ export default function Register() {
       return;
     }
 
-    const res = await signUp(name, email.trim(), password, username);
-    if (res.error) {
-      if (res.error.includes("Invalid login credentials")) {
-        setError("E-mail ou senha inválidos.");
-      } else {
-        setError(res.error);
-      }
-    } else {
-      router.push("/profile");
+    setLoading(true);
+
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) {
+      setError(signUpError.message);
+      setLoading(false);
+      return;
     }
+
+    const user = data.user;
+    if (user) {
+      await supabase.from("profiles").insert({
+        id: user.id,
+        email: user.email,
+        username,
+        name,
+      });
+
+      router.replace("/profile");
+    }
+
+    setLoading(false);
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-light-background dark:bg-dark-background px-6">
+    <View className="flex-1 items-center justify-center bg-light-background px-6">
       <Logo />
 
-      <Text className="text-light-text dark:text-dark-text text-lg mb-6">
-        Cadastre-se
-      </Text>
+      <Text className="text-light-text text-lg mb-6">Cadastre-se</Text>
 
       <Input
         placeholder="Nome"
@@ -86,6 +99,7 @@ export default function Register() {
         className="mb-4"
       />
 
+      {/* Senha */}
       <View className="w-full mb-2 relative">
         <Input
           placeholder="Senha"
@@ -115,6 +129,7 @@ export default function Register() {
           </Text>
         </View>
       )}
+
       <View className="w-full mb-6 relative">
         <Input
           placeholder="Confirme a senha"
@@ -142,12 +157,10 @@ export default function Register() {
         className="mb-4"
       />
 
-      <GoogleButton onPress={handleRegister} />
+      <GoogleButton onPress={() => router.push("/login")} />
 
       <TouchableOpacity onPress={() => router.push("/login")}>
-        <Text className="text-light-nav dark:text-dark-nav mt-6">
-          Já tem conta? Faça login
-        </Text>
+        <Text className="text-light-nav mt-6">Já tem conta? Faça login</Text>
       </TouchableOpacity>
     </View>
   );
