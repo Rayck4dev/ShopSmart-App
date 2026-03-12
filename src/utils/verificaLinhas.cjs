@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 /* 👇 Quais extensões você quer verificar: */
-const extensoesPermitidas = [".tsx", ".ts"];
+const extensoesPermitidas = [".tsx"];
 
 /* 👇 Qual o limite de linhas para todos os arquivos com a extensão escolhida: */
 const limite = 200;

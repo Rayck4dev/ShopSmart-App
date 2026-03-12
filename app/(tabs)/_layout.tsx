@@ -1,17 +1,23 @@
 import { Tabs } from "expo-router";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Home, Plus, User } from "lucide-react-native";
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-function CustomTabBar({ state, descriptors, navigation }) {
+function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        paddingVertical: 10,
+        paddingVertical: 20,
         backgroundColor: "#fff",
-        elevation: 5,
+        elevation: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        overflow: "visible",
       }}
     >
       {state.routes.map((route, index) => {
@@ -21,6 +27,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,
+            canPreventDefault: true,
           });
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name);
@@ -35,12 +42,20 @@ function CustomTabBar({ state, descriptors, navigation }) {
             <View
               style={{
                 backgroundColor: "#f97316",
-                borderRadius: 30,
-                padding: 12,
-                marginBottom: 8,
+                borderRadius: 35,
+                width: 60,
+                height: 60,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: -40,
+                elevation: 8,
+                shadowColor: "#f97316",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 8,
               }}
             >
-              <Plus color="#fff" size={28} />
+              <Plus color="#fff" size={30} />
             </View>
           );
         } else if (route.name === "profile") {
@@ -54,17 +69,6 @@ function CustomTabBar({ state, descriptors, navigation }) {
             style={{ alignItems: "center" }}
           >
             {icon}
-            {route.name !== "add" && (
-              <Text
-                style={{
-                  color: isFocused ? "#f97316" : "#666",
-                  fontSize: 12,
-                  marginTop: 4,
-                }}
-              >
-                {route.name}
-              </Text>
-            )}
           </TouchableOpacity>
         );
       })}
@@ -75,12 +79,12 @@ function CustomTabBar({ state, descriptors, navigation }) {
 export default function Layout() {
   return (
     <Tabs
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: false, tabBarShowLabel: false }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="add" options={{ title: "Add" }} />
-      <Tabs.Screen name="profile" options={{ title: "Profile" }} />
+      <Tabs.Screen name="profile" options={{ title: "Perfil" }} />
     </Tabs>
   );
 }
