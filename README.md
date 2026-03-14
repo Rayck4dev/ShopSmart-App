@@ -4,15 +4,23 @@ O **ShopSmart** é um aplicativo mobile desenvolvido em **React Native + Expo**,
 
 --- 
 
+## 🚀 Funcionalidades:
+
+- 🔑 **Autenticação**: login e cadastro com Supabase  
+- 📝 **Gerenciamento de listas**: criar, editar e excluir listas de compras  
+- 📦 **Produtos**: adicionar, editar e remover produtos  
+- 👤 **Perfil do usuário**: edição de dados e logout  
+- 📜 **Histórico de compras**: visualizar listas anteriores  
+
+---
+
 O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 - **Pages Introdutórias**; 
 - **Login**; 
 - **Cadastro**;
 - **Home**;
 - **Perfil**;
-- **Carrinho**;
 - **Edição de Produto**;
-- **Compras Anteriores**;
 - **Nova Lista**;
 - **Minhas Listas**;
 ---
@@ -38,13 +46,24 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 
 ---
 
-## 📂 Estrutura de pastas
+## 📂 Estrutura de pastas (Ainda em Atualização ⚠️)
 
-(Ainda em Desenvolvimento ⚠️)
-
+```bash
+ShopSmart-App/
+├── app/                # Rotas e layouts (expo-router)
+│   ├── (auth)/         # Telas de login e cadastro
+│   ├── (tabs)/         # Telas principais (home, perfil, etc.)
+│   └── _layout.tsx     # RootLayout
+├── src/
+│   ├── components/     # Componentes reutilizáveis
+│   ├── lib/            # Configuração Supabase
+│   ├── styles/         # Estilos globais
+│   └── utils/          # Funções auxiliares
+└── README.md
+```
 ---
 
-## 🚀 Instalação e execução (Ainda em Desenvolvimento ⚠️)
+## 🚀 Instalação e execução (Ainda em Atualização ⚠️)
 
 ### Requisitos
 - Node.js (versão LTS recomendada)  
@@ -57,8 +76,8 @@ O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/Rayck4dev/shopsmart.git
-cd ...
+git clone https://github.com/Rayck4dev/ShopSmart-App.git
+cd ShopSmart-App
 ```
 
 ---
@@ -69,4 +88,57 @@ Após clonar o repositório, instale as dependências do projeto:
 npm install
 # ou
 yarn install
+```
 
+---
+### 3. Rodar o projeto
+
+```bash
+npx expo start
+```
+
+## 🗄️ Estrutura do Banco (SQLs) (Ainda em Atualização ⚠️)
+
+### Profiles
+```sql
+create table profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username text unique not null,
+  name text,
+  email text unique not null,
+  created_at timestamp default now(),
+  updated_at timestamp default now()
+);
+```
+
+### Products
+```sql
+create table products (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  price numeric(10,2),
+  owner_id uuid references profiles(id) on delete cascade,
+  created_at timestamp default now()
+);
+```
+
+### Lists
+```sql
+create table lists (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references profiles(id) on delete cascade,
+  name text not null,
+  created_at timestamp default now()
+);
+```
+
+### List Products
+```sql
+create table list_products (
+  list_id uuid references lists(id) on delete cascade,
+  product_id uuid references products(id) on delete cascade,
+  quantity int default 1,
+  primary key (list_id, product_id)
+);
+```
