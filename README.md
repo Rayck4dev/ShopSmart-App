@@ -142,3 +142,116 @@ create table list_products (
   primary key (list_id, product_id)
 );
 ```
+
+### Categories
+```sql
+create table categories (
+  id uuid primary key default gen_random_uuid(),
+  nome text not null,
+  usa_valor_por_peso boolean not null default false,
+  emoji text
+);
+```
+
+## 🔒 Row Level Security (RLS)
+
+Este projeto usa **Supabase RLS** para garantir que cada usuário só consiga acessar seus próprios dados.
+
+### Profiles
+```sql
+create policy "Usuário só vê seu perfil"
+on profiles for select
+using (id = auth.uid());
+
+create policy "Usuário só insere seu perfil"
+on profiles for insert
+with check (id = auth.uid());
+
+create policy "Usuário só atualiza seu perfil"
+on profiles for update
+using (id = auth.uid());
+
+create policy "Usuário só deleta seu perfil"
+on profiles for delete
+using (id = auth.uid());
+```
+
+### Products
+```sql
+CREATE POLICY "owners can view products"
+ON products FOR SELECT
+USING (owner_id = auth.uid());
+
+CREATE POLICY "owners can insert products"
+ON products FOR INSERT
+WITH CHECK (owner_id = auth.uid());
+
+CREATE POLICY "owners can update products"
+ON products FOR UPDATE
+USING (owner_id = auth.uid());
+
+CREATE POLICY "owners can delete products"
+ON products FOR DELETE
+USING (owner_id = auth.uid());
+```
+
+### Lists
+```sql
+CREATE POLICY "owners can view lists"
+ON lists FOR SELECT
+USING (user_id = auth.uid());
+
+CREATE POLICY "owners can insert lists"
+ON lists FOR INSERT
+WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "owners can update lists"
+ON lists FOR UPDATE
+USING (user_id = auth.uid());
+
+CREATE POLICY "owners can delete lists"
+ON lists FOR DELETE
+USING (user_id = auth.uid());
+```
+
+### List Products
+```sql
+CREATE POLICY "owners can view list_products"
+ON list_products FOR SELECT
+USING (
+  list_id IN (SELECT id FROM lists WHERE user_id = auth.uid())
+);
+
+CREATE POLICY "owners can insert list_products"
+ON list_products FOR INSERT
+WITH CHECK (
+  list_id IN (SELECT id FROM lists WHERE user_id = auth.uid())
+);
+
+CREATE POLICY "owners can update list_products"
+ON list_products FOR UPDATE
+USING (
+  list_id IN (SELECT id FROM lists WHERE user_id = auth.uid())
+);
+
+CREATE POLICY "owners can delete list_products"
+ON list_products FOR DELETE
+USING (
+  list_id IN (SELECT id FROM lists WHERE user_id = auth.uid())
+);
+```
+
+### Categories
+```sql
+CREATE POLICY "all users can view categories"
+ON categories FOR SELECT
+USING (true);
+
+insert into categories (nome, usa_valor_por_peso, emoji) values
+('legumes', true, '🍅'),
+('verduras', true, '🥬'),
+('bebidas', false, '🥤'),
+('higiene', false, '🧴'),
+('padaria', true, '🥖'),
+('outros', false, '📦');
+```
