@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter, useSegments, Slot } from "expo-router";
+import { Slot, useSegments, Redirect, Router} from "expo-router";
 import { supabase } from "@/src/lib/supabaseClient";
 import type { Session } from "@supabase/supabase-js";
 import "@/src/styles/global.css";
@@ -7,7 +7,6 @@ import "@/src/styles/global.css";
 export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
   const segments = useSegments();
 
   useEffect(() => {
@@ -16,28 +15,28 @@ export default function RootLayout() {
       setIsLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (isLoading) return;
-
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (!session && !inAuthGroup) {
-      router.replace("/login");
-    } else if (session && inAuthGroup) {
-      router.replace("/home");
-    }
-  }, [session, segments, isLoading]);
-
   if (isLoading) return null;
+
+  const inAuthGroup = segments[0] === "(auth)";
+
+  if (!session && !inAuthGroup) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  if (session && inAuthGroup) {
+    return <Redirect href="/(tabs)/home" />;
+  }
 
   return <Slot />;
 }
+
+

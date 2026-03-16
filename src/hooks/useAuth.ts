@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
 
@@ -9,6 +9,19 @@ interface AuthResult {
 
 export function useAuth() {
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      },
+    );
+
+    return () => {
+      subscription.subscription.unsubscribe();
+    };
+  }, []);
 
   const signUp = async (
     name: string,
@@ -17,17 +30,12 @@ export function useAuth() {
     username: string,
   ): Promise<AuthResult> => {
     setLoading(true);
-
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { name, username }, 
-      },
+      options: { data: { name, username } },
     });
-
     setLoading(false);
-
     if (error) return { error: error.message };
     return { user: data.user ?? undefined };
   };
@@ -42,24 +50,22 @@ export function useAuth() {
       password,
     });
     setLoading(false);
-
     if (error) return { error: error.message };
     return { user: data.user ?? undefined };
   };
 
   const signInWithGoogle = async (): Promise<AuthResult> => {
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "exp://localhost:8081",
+        redirectTo: "https://lxurqoggpazpjmoilbrg.supabase.co/auth/v1/callback",
       },
     });
     setLoading(false);
-
     if (error) return { error: error.message };
-    return { user: data.user ?? undefined };
+    return { user };
   };
 
-  return { signUp, signIn, signInWithGoogle, loading };
+  return { signUp, signIn, signInWithGoogle, loading, user };
 }

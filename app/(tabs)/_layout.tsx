@@ -1,16 +1,16 @@
 import { Tabs } from "expo-router";
+import { router } from "expo-router";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Home, Plus, User } from "lucide-react-native";
-import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-
-function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   return (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        paddingVertical: 20,
+        paddingVertical: 25,
         backgroundColor: "#fff",
         elevation: 10,
         shadowColor: "#000",
@@ -29,11 +29,11 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             target: route.key,
             canPreventDefault: true,
           });
+
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+            navigation.navigate(route.name as never);
           }
         };
-
         let icon;
         if (route.name === "home") {
           icon = <Home color={isFocused ? "#f97316" : "#666"} size={24} />;
@@ -47,7 +47,7 @@ function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
                 height: 60,
                 alignItems: "center",
                 justifyContent: "center",
-                marginTop: -40,
+                marginTop: -55,
                 elevation: 8,
                 shadowColor: "#f97316",
                 shadowOffset: { width: 0, height: 4 },

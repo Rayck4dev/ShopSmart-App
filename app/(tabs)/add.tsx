@@ -5,7 +5,7 @@ export default function Add() {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text style={{ fontSize: 20, fontWeight: "bold" }}>Página Add</Text>
       <Text style={{ marginTop: 10 }}>
-        Aqui você poderia colocar o formulário ou ação de adicionar item.
+        Formulário ou ação de adicionar item.
       </Text>
     </View>
   );

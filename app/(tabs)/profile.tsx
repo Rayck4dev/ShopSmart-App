@@ -1,12 +1,12 @@
+import ThemeToggleButton from "@/src/components/ThemeToggleButton";
 import { supabase } from "@/src/lib/supabaseClient";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View, Image } from "react-native";
+import { router } from "expo-router";
 import { Bell, Headphones, Pencil, Power, Sliders } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -43,8 +43,12 @@ export default function Profile() {
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.replace("/login");
+    try {
+      await supabase.auth.signOut();
+      router.replace("/(auth)/login");
+    } catch (err) {
+      console.error("Erro ao deslogar:", err);
+    }
   };
 
   if (!profile) {
@@ -56,9 +60,8 @@ export default function Profile() {
   }
 
   return (
-    <View className="flex-1 bg-gradient-to-b from-yellow-100 to-white px-6 pt-12">
-      {/* Avatar */}
-      <View className="items-center mb-6">
+    <View className="flex-1 bg-white px-6 pt-12">
+      <View className="items-center mb-6 mt-20">
         <Image
           source={{
             uri: `https://api.dicebear.com/7.x/avataaars/png?seed=${profile.username || profile.email}`,
@@ -71,28 +74,29 @@ export default function Profile() {
         <Text className="text-gray-500">{profile.email}</Text>
       </View>
 
-      {/* Botões */}
-      <TouchableOpacity className="flex-row items-center justify-center bg-orange-500 py-3 rounded-lg mb-4">
+      <TouchableOpacity
+        className="flex-row items-center justify-center bg-orange-500 py-3 rounded-lg mb-4"
+        onPress={() => router.push("/edit-profile")}
+      >
         <Pencil color="#fff" />
         <Text className="ml-2 text-white font-semibold">Editar Perfil</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3">
+      <ThemeToggleButton />
+
+      <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3 mt-4">
         <Bell color="#f97316" />
         <Text className="ml-2">Notificações</Text>
       </TouchableOpacity>
-
       <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3">
         <Sliders color="#f97316" />
         <Text className="ml-2">Preferências</Text>
       </TouchableOpacity>
-
       <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3">
         <Headphones color="#f97316" />
         <Text className="ml-2">Suporte</Text>
       </TouchableOpacity>
 
-      {/* Logout */}
       <TouchableOpacity
         className="flex-row items-center justify-center mt-8 bg-orange-500 py-3 rounded-lg"
         onPress={handleLogout}
