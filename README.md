@@ -10,8 +10,6 @@ O **ShopSmart** é um aplicativo mobile desenvolvido em **React Native + Expo**,
 - 📝 **Gerenciamento de listas**: criar, editar e excluir listas de compras  
 - 📦 **Produtos**: adicionar, editar e remover produtos  
 - 👤 **Perfil do usuário**: edição de dados e logout  
-- 📜 **Histórico de compras**: visualizar listas anteriores  
-
 ---
 
 O projeto contempla as seguintes telas: (Ainda em Atualização ⚠️)
