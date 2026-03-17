@@ -63,7 +63,7 @@ ShopSmart-App/
 ```
 ---
 
-## 🚀 Instalação e execução (Ainda em Atualização ⚠️)
+## 🚀 Instalação e execução
 
 ### Requisitos
 - Node.js (versão LTS recomendada)  
@@ -97,7 +97,7 @@ yarn install
 npx expo start
 ```
 
-## 🗄️ Estrutura do Banco (SQLs) (Ainda em Atualização ⚠️)
+## 🗄️ Estrutura do Banco (SQLs) 
 
 ### Profiles
 ```sql
