@@ -1,13 +1,13 @@
+import Button from "@/src/components/auth/Button";
+import GoogleButton from "@/src/components/auth/GoogleButton";
+import Input from "@/src/components/auth/Input";
+import Logo from "@/src/components/auth/Logo";
+import { signInWithGoogle } from "@/src/lib/googleAuth";
+import { supabase } from "@/src/lib/supabaseClient";
 import { useRouter } from "expo-router";
+import { Eye, EyeOff } from "lucide-react-native";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import Button from "@/src/components/Button";
-import GoogleButton from "@/src/components/GoogleButton";
-import Input from "@/src/components/Input";
-import Logo from "@/src/components/Logo";
-import { supabase } from "@/src/lib/supabaseClient";
-import { signInWithGoogle } from "@/src/lib/googleAuth";
-import { Eye, EyeOff } from "lucide-react-native";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -129,7 +129,6 @@ export default function Register() {
         className="mb-4"
       />
 
-      {/* Senha */}
       <View className="w-full mb-2 relative">
         <Input
           placeholder="Senha"
@@ -137,7 +136,7 @@ export default function Register() {
           value={password}
           onChangeText={(text) => {
             setPassword(text);
-            setConfirmPassword(text); 
+            setConfirmPassword(text);
           }}
         />
         <TouchableOpacity
@@ -195,4 +194,3 @@ export default function Register() {
     </View>
   );
 }
-

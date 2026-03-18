@@ -13,8 +13,8 @@ export default function SaleTypeSwitch({ saleType, setSaleType }: Props) {
       <Switch
         value={isUnit}
         onValueChange={(val) => setSaleType(val ? "unidade" : "peso")}
-        trackColor={{ false: "#9CA3AF", true: "#22C55E" }} // cinza e verde
-        thumbColor="#fff" // bolinha branca
+        trackColor={{ false: "#9CA3AF", true: "#22C55E" }}
+        thumbColor="#fff"
       />
       <Text className="text-black text-base font-semibold ml-3">
         Por unidade

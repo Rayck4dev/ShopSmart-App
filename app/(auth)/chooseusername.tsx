@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { View, Text } from "react-native";
-import { useRouter } from "expo-router";
+import Button from "@/src/components/auth/Button";
+import Input from "@/src/components/auth/Input";
 import { supabase } from "@/src/lib/supabaseClient";
-import Input from "@/src/components/Input";
-import Button from "@/src/components/Button";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { Text, View } from "react-native";
 
 export default function ChooseUsername() {
   const [username, setUsername] = useState("");
@@ -70,10 +70,7 @@ export default function ChooseUsername() {
 
       {error && <Text className="text-red-500 mb-4">{error}</Text>}
 
-      <Button
-        title={loading ? "Salvando..." : "Salvar"}
-        onPress={handleSave}
-      />
+      <Button title={loading ? "Salvando..." : "Salvar"} onPress={handleSave} />
     </View>
   );
 }

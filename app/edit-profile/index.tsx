@@ -1,10 +1,10 @@
+import PasswordField from "@/src/components/auth/PasswordField";
+import SaveButton from "@/src/components/ui/SaveButton";
+import InputField from "@/src/components/ui/InputField";
 import { supabase } from "@/src/lib/supabaseClient";
 import { router, Stack } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, Alert } from "react-native";
-import InputField from "@/src/components/InputField";
-import PasswordField from "@/src/components/PasswordField";
-import SaveButton from "@/src/components/SaveButton";
+import { Alert, Text, View } from "react-native";
 
 export default function EditProfile() {
   const [profile, setProfile] = useState<any>(null);

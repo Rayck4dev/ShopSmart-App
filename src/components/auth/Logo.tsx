@@ -4,7 +4,7 @@ export default function Logo() {
   return (
     <View className="flex-row items-center mb-6">
       <Image
-        source={require("../../assets/carrinho_transp.png")}
+        source={require("../../../assets/carrinho_transp.png")}
         style={{ width: 40, height: 40 }}
         resizeMode="contain"
       />

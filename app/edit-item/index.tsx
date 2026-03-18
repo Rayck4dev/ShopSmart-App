@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { View, Text, Alert } from "react-native";
 import { supabase } from "@/src/lib/supabaseClient";
-import NameInput from "@/src/components/NameInput";
-import CategoryInput from "@/src/components/CategoryInput";
-import MoneyInput from "@/src/components/MoneyInput";
-import ActionButtons from "@/src/components/ActionButtons";
-import NumberInput from "@/src/components/NumberInput";
-import SaleTypeSelector from "@/src/components/SaleTypeSelector";
+import NameInput from "@/src/components/edit-item/NameInput";
+import CategoryInput from "@/src/components/edit-item/CategoryInput";
+import MoneyInput from "@/src/components/edit-item/MoneyInput";
+import ActionButtons from "@/src/components/edit-item/ActionButtons";
+import NumberInput from "@/src/components/edit-item/NumberInput";
+import SaleTypeSelector from "@/src/components/edit-item/SaleTypeSelector";
 
 interface Category {
   id: string;

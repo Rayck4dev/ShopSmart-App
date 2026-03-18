@@ -1,4 +1,4 @@
-import InputField from "./InputField";
+import InputField from "../ui/InputField";
 
 interface ItemFormProps {
   name: string;
@@ -16,16 +16,8 @@ export default function ItemForm({
   return (
     <>
       <InputField label="Nome" value={name} onChangeText={() => {}} />
-      <InputField
-        label="Quantidade"
-        value={quantity}
-        onChangeText={() => {}}
-      />
-      <InputField
-        label="Categoria"
-        value={category}
-        onChangeText={() => {}}
-      />
+      <InputField label="Quantidade" value={quantity} onChangeText={() => {}} />
+      <InputField label="Categoria" value={category} onChangeText={() => {}} />
       <InputField label="Preço" value={price} onChangeText={() => {}} />
     </>
   );

@@ -1,9 +1,10 @@
-import ThemeToggleButton from "@/src/components/ThemeToggleButton";
+import ThemeToggleButton from "@/src/components/ui/ThemeToggleButton";
 import { supabase } from "@/src/lib/supabaseClient";
 import { router } from "expo-router";
 import { Bell, Headphones, Pencil, Power, Sliders } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import ProfileHeader from "@/src/components/ui/ProfileHeader";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>(null);
@@ -60,50 +61,57 @@ export default function Profile() {
   }
 
   return (
-    <View className="flex-1 bg-white px-6 pt-12">
-      <View className="items-center mb-6 mt-20">
-        <Image
-          source={{
-            uri: `https://api.dicebear.com/7.x/avataaars/png?seed=${profile.username || profile.email}`,
-          }}
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-        />
-        <Text className="text-xl font-bold mt-4">
-          {profile.name || profile.username}
-        </Text>
-        <Text className="text-gray-500">{profile.email}</Text>
+    <View className="flex-1 bg-white">
+      <ProfileHeader
+        profile={profile}
+        onSettings={() => router.push("/settings")}
+      />
+
+      <View className="px-6 -mt-6">
+        <View className="bg-white rounded-xl shadow-md p-4">
+          <TouchableOpacity
+            className="flex-row items-center justify-center bg-orange-500 py-3 rounded-lg mb-4"
+            onPress={() => router.push("/edit-profile")}
+          >
+            <Pencil color="#fff" />
+            <Text className="ml-2 text-white font-semibold">Editar Perfil</Text>
+          </TouchableOpacity>
+
+          <ThemeToggleButton />
+
+          <TouchableOpacity
+            className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3 mt-4"
+            onPress={() => router.push("/notifications")}
+          >
+            <Bell color="#f97316" />
+            <Text className="ml-2">Notificações</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3"
+            onPress={() => router.push("/preferences")}
+          >
+            <Sliders color="#f97316" />
+            <Text className="ml-2">Preferências</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3"
+            onPress={() => router.push("/support")}
+          >
+            <Headphones color="#f97316" />
+            <Text className="ml-2">Suporte</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          className="flex-row items-center justify-center mt-8 bg-orange-500 py-3 rounded-lg"
+          onPress={handleLogout}
+        >
+          <Power color="#fff" />
+          <Text className="ml-2 text-white font-semibold">Deslogar</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        className="flex-row items-center justify-center bg-orange-500 py-3 rounded-lg mb-4"
-        onPress={() => router.push("/edit-profile")}
-      >
-        <Pencil color="#fff" />
-        <Text className="ml-2 text-white font-semibold">Editar Perfil</Text>
-      </TouchableOpacity>
-
-      <ThemeToggleButton />
-
-      <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3 mt-4">
-        <Bell color="#f97316" />
-        <Text className="ml-2">Notificações</Text>
-      </TouchableOpacity>
-      <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3">
-        <Sliders color="#f97316" />
-        <Text className="ml-2">Preferências</Text>
-      </TouchableOpacity>
-      <TouchableOpacity className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3">
-        <Headphones color="#f97316" />
-        <Text className="ml-2">Suporte</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        className="flex-row items-center justify-center mt-8 bg-orange-500 py-3 rounded-lg"
-        onPress={handleLogout}
-      >
-        <Power color="#fff" />
-        <Text className="ml-2 text-white font-semibold">Deslogar</Text>
-      </TouchableOpacity>
     </View>
   );
 }
