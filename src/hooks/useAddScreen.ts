@@ -100,7 +100,6 @@ export function useAddScreen() {
 
     setPreviewItems((prev) => [...prev, newItem]);
 
-    // Limpa campos
     setName("");
     setPricePerKg("");
     setWeight("");

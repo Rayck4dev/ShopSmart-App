@@ -1,7 +1,16 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Settings } from "lucide-react-native";
 
-export default function ProfileHeader({ profile, onSettings }) {
+interface ProfileHeaderProps {
+  profile: {
+    username: string;
+    email: string;
+    name: string;
+  };
+  onSettings: () => void;
+}
+
+export default function ProfileHeader({ profile, onSettings }: ProfileHeaderProps) {
   return (
     <View className="bg-orange-500 pt-16 pb-10 rounded-b-3xl shadow-md shadow-black/10">
       <TouchableOpacity
