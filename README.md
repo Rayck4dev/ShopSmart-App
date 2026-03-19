@@ -289,6 +289,7 @@ USING (true);
 
 insert into categories (nome, usa_valor_por_peso, emoji) values
 ('legumes', true, '🍅'),
+('frutas', true, '🥭'),
 ('verduras', true, '🥬'),
 ('bebidas', false, '🥤'),
 ('higiene', false, '🧴'),
