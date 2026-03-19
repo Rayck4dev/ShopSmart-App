@@ -4,6 +4,22 @@ O **ShopSmart** é um aplicativo mobile desenvolvido em **React Native + Expo**,
 
 ---
 
+> [!IMPORTANT]
+> **🚧 Projeto em Desenvolvimento (Fase 1/2)**
+
+> Este é um projeto acadêmico para o 1º semestre. Novas funcionalidades e melhorias de UX serão implementadas no 2º bimestre. Fique de olho nas atualizações! 🚀
+
+---
+
+## 👥 Equipe responsável
+
+- Ana Luiza [GitHub](https://github.com/AnaLuiza2431)
+- Emily Pereira [GitHub](https://github.com/Emily2311)
+- Kerollayne Akemy [GitHub](https://github.com/KerollayneAkemy)
+- Raycka Castro
+
+---
+
 ## 🚀 Funcionalidades:
 
 - 🔑 **Autenticação Segura**: Sistema de login e cadastro integrado ao **Supabase Auth**.
@@ -27,15 +43,6 @@ O projeto contempla as seguintes telas:
 
 ---
 
-## 👥 Equipe responsável
-
-- Ana Luiza [GitHub](https://github.com/AnaLuiza2431)
-- Emily Pereira [GitHub](https://github.com/Emily2311)
-- Kerollayne Akemy [GitHub](https://github.com/KerollayneAkemy)
-- Raycka Castro
-
----
-
 ## ⚙️ Tecnologias utilizadas
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
@@ -49,20 +56,26 @@ O projeto contempla as seguintes telas:
 
 ---
 
-## 📂 Estrutura de pastas (Ainda em Atualização ⚠️)
+## 📂 Estrutura de Pastas
 
-```bash
-ShopSmart-App/
-├── app/                # Rotas e layouts (expo-router)
-│   ├── (auth)/         # Telas de login e cadastro
-│   ├── (tabs)/         # Telas principais (home, perfil, etc.)
-│   └── _layout.tsx     # RootLayout
-├── src/
-│   ├── components/     # Componentes reutilizáveis
-│   ├── lib/            # Configuração Supabase
-│   ├── styles/         # Estilos globais
-│   └── utils/          # Funções auxiliares
-└── README.md
+```text
+├── 📁 app/              # Rotas e navegação principal (Expo Router)
+├── 📁 assets/           # Imagens, fontes e arquivos estáticos
+├── 📁 src/              # Núcleo do desenvolvimento (Source)
+│   ├── 📁 components/   # Componentes reutilizáveis do app
+│   ├── 📁 hooks/        # Lógica de estados e efeitos customizados
+│   ├── 📁 lib/          # Configurações de bibliotecas (ex: Supabase Client)
+│   ├── 📁 styles/       # Arquivos de estilização (Global/Tailwind)
+│   ├── 📁 types/        # Tipagens globais do projeto
+│   └── 📁 utils/        # Funções auxiliares e utilitárias
+├── .env                 # Variáveis sensíveis (Local - Não sobe para o Git)
+├── .gitignore           # Lista de arquivos ignorados pelo controle de versão
+├── app.json             # Manifesto de configuração do Expo
+├── babel.config.js      # Configuração do compilador Babel
+├── index.ts             # Ponto de entrada do aplicativo
+├── package.json         # Gerenciamento de dependências e scripts
+├── tailwind.config.ts   # Configuração do Tailwind CSS/NativeWind
+└── tsconfig.json        # Configurações do compilador TypeScript
 ```
 
 ---
@@ -81,7 +94,7 @@ ShopSmart-App/
 ### 1. Clonar o repositório
 
 ```bash
-git clone [https://github.com/Rayck4dev/ShopSmart-App.git](https://github.com/Rayck4dev/ShopSmart-App.git)
+git clone https://github.com/Rayck4dev/ShopSmart-App.git
 cd ShopSmart-App
 ```
 
@@ -283,4 +296,4 @@ insert into categories (nome, usa_valor_por_peso, emoji) values
 ('outros', false, '📦');
 ```
 
-| Developed with ☕ by ShopSmart Team.
+> Developed with ☕ by ShopSmart Team.
