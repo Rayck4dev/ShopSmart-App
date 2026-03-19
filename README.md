@@ -68,7 +68,6 @@ O projeto contempla as seguintes telas:
 │   ├── 📁 styles/       # Arquivos de estilização (Global/Tailwind)
 │   ├── 📁 types/        # Tipagens globais do projeto
 │   └── 📁 utils/        # Funções auxiliares e utilitárias
-├── .env                 # Variáveis sensíveis (Local - Não sobe para o Git)
 ├── .gitignore           # Lista de arquivos ignorados pelo controle de versão
 ├── app.json             # Manifesto de configuração do Expo
 ├── babel.config.js      # Configuração do compilador Babel
