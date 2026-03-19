@@ -87,7 +87,7 @@ export default function FinalizeModal({
             className={`mt-8 py-4 rounded-xl items-center ${saving ? "bg-gray-400" : "bg-green-600"}`}
           >
             <Text className="text-white font-bold text-lg">
-              {saving ? "Salvando..." : "Confirmar e Salvar no Banco"}
+              {saving ? "Salvando..." : "Confirmar"}
             </Text>
           </TouchableOpacity>
 

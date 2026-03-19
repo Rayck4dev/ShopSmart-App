@@ -64,7 +64,7 @@ export function useAuth() {
     });
     setLoading(false);
     if (error) return { error: error.message };
-    return { user };
+    return { user: user ?? undefined };
   };
 
   return { signUp, signIn, signInWithGoogle, loading, user };
