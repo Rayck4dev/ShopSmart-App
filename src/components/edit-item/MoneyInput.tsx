@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TextInput, View, Text } from "react-native";
 
 type MoneyInputProps = {
@@ -27,23 +26,20 @@ export default function MoneyInput({
   value,
   onChange,
 }: MoneyInputProps) {
-  const [raw, setRaw] = useState(value);
-
   const handleChange = (text: string) => {
     const formatted = formatMoneyInput(text);
-    setRaw(formatted);
-    onChange(formatted);
+    onChange(formatted); 
   };
 
   return (
-    <View className="mb-4 mt-4 font-bold">
+    <View className="mb-4 mt-2">
       <Text className="text-black mb-2 font-bold">{label}</Text>
       <TextInput
-        value={raw}
+        value={value} 
         onChangeText={handleChange}
         keyboardType="numeric"
-        placeholder="0,00"
-        placeholderTextColor="#888"
+        placeholder="R$ 0,00"
+        placeholderTextColor="#9ca3af"
         className="bg-gray-800 text-white font-bold px-4 py-3 rounded-lg"
       />
     </View>

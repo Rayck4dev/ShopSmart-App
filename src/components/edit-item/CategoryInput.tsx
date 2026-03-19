@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import { supabase } from "@/src/lib/supabaseClient";
 
 type Category = {
   id: string;
@@ -13,39 +12,33 @@ type Category = {
 type CategoryInputProps = {
   value: string;
   onChange: (val: string) => void;
+  categories: Category[];
 };
 
-export default function CategoryInput({ value, onChange }: CategoryInputProps) {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data, error } = await supabase.from("categories").select("*");
-      if (error) {
-        console.error("Erro ao buscar categorias:", error.message);
-      } else if (data) {
-        setCategories(data);
-      }
-    };
-    fetchCategories();
-  }, []);
+export default function CategoryInput({
+  value,
+  onChange,
+  categories,
+}: CategoryInputProps) {
 
   return (
     <View className="mb-4">
-      <Text className="text-black mb-2 font-bold">Categoria:</Text>
-      <View className="bg-gray-800 rounded-lg">
+      <Text className="text-gray-700 mb-2 font-bold">Categoria</Text>
+
+      <View className="bg-gray-100 rounded-xl border border-gray-200">
         <RNPickerSelect
           onValueChange={onChange}
           value={value}
           items={categories.map((cat) => ({
-            label: `${cat.emoji ?? ""} ${cat.nome}`, 
+            label: `${cat.emoji ?? "📦"} ${cat.nome}`,
             value: cat.id,
+            color: "#000",
           }))}
-          placeholder={{ label: "Selecione uma categoria", value: "" }}
+          placeholder={{ label: "Selecione uma categoria...", value: "" }}
           style={{
-            inputIOS: { color: "#fff", padding: 12 },
-            inputAndroid: { color: "#fff", padding: 12 },
-            placeholder: { color: "#888" },
+            inputIOS: { color: "#000", padding: 16, fontSize: 16 },
+            inputAndroid: { color: "#000", padding: 12, fontSize: 16 },
+            placeholder: { color: "#9CA3AF" },
           }}
         />
       </View>

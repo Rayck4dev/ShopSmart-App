@@ -3,11 +3,13 @@ import { View, Text, TouchableOpacity } from "react-native";
 type ActionButtonsProps = {
   onSave: () => void;
   onCancel: () => void;
+  saving?: boolean;
 };
 
 export default function ActionButtons({
   onSave,
   onCancel,
+  saving,
 }: ActionButtonsProps) {
   return (
     <View className="flex-row justify-between mt-6">
@@ -20,9 +22,12 @@ export default function ActionButtons({
 
       <TouchableOpacity
         onPress={onSave}
-        className="flex-1 bg-green-600 py-3 rounded-lg ml-2"
+        disabled={saving} 
+        className={`flex-1 py-3 rounded-lg ml-2 ${saving ? "bg-green-300" : "bg-green-600"}`}
       >
-        <Text className="text-center text-white font-semibold">Salvar</Text>
+        <Text className="text-center text-white font-semibold">
+          {saving ? "Salvando..." : "Salvar"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

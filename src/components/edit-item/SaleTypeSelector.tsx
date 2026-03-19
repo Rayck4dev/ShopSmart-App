@@ -1,4 +1,5 @@
-import { View, Text, Switch } from "react-native";
+import React from "react";
+import { View, Text, Switch, Platform } from "react-native";
 
 type Props = {
   nome?: string;
@@ -15,53 +16,32 @@ export default function SaleTypeSelector({
 }: Props) {
   const isUnit = saleType === "unidade";
 
-  if (!nome) {
-    return (
-      <View className="flex-row items-center mt-4">
-        <Text className="text-black text-base font-semibold">
-          Preço por unidade
-        </Text>
-      </View>
-    );
-  }
-
   if (!usaValorPorPeso) {
     return (
-      <View className="flex-row items-center mt-4">
-        <Text className="text-black text-base font-semibold">
-          Preço por unidade
-        </Text>
-      </View>
-    );
-  }
-
-  if (nome === "padaria") {
-    return (
-      <View className="flex-row items-center mt-4">
-        <Text className="text-black text-base font-semibold">Preço por kg</Text>
-      </View>
-    );
-  }
-
-  if (nome === "verduras" || nome === "legumes") {
-    return (
-      <View className="flex-row items-center mt-4">
-        <Switch
-          value={isUnit}
-          onValueChange={(val) => setSaleType(val ? "unidade" : "peso")}
-          trackColor={{ false: "#9CA3AF", true: "#22C55E" }}
-          thumbColor="#fff"
-        />
-        <Text className="text-black text-base font-semibold ml-3">
-          {isUnit ? "Por unidade" : "Por kg"}
+      <View className="flex-row items-center mt-4 mb-2">
+        <Text className="text-gray-500 text-base font-semibold">
+          Venda por: <Text className="text-black">Unidade</Text>
         </Text>
       </View>
     );
   }
 
   return (
-    <View className="flex-row items-center mt-4">
-      <Text className="text-black text-base font-semibold">Preço por kg</Text>
+    <View className="flex-row items-center mt-4 mb-2 bg-gray-50 p-2 rounded-lg">
+      <Switch
+        value={isUnit}
+        onValueChange={(val) => setSaleType(val ? "unidade" : "peso")}
+        trackColor={{ false: "#9CA3AF", true: "#FF7A00" }}
+        thumbColor={Platform.OS === "ios" ? undefined : "#fff"}
+      />
+      <View className="ml-3">
+        <Text className="text-black text-base font-semibold">
+          {isUnit ? "Preço por Unidade" : "Preço por Quilo (Kg)"}
+        </Text>
+        <Text className="text-gray-400 text-xs">
+          Toque para alternar o modo de venda
+        </Text>
+      </View>
     </View>
   );
 }

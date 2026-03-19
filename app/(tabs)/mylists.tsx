@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
-import { supabase } from "@/src/lib/supabaseClient";
 import Header from "@/src/components/lists/Header";
 import ListCard from "@/src/components/lists/ListCard";
+import { supabase } from "@/src/lib/supabaseClient";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function MyListsScreen() {
   const [lists, setLists] = useState<any[]>([]);

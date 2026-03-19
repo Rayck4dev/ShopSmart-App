@@ -24,7 +24,7 @@ export default function HomeHeader({ title, subtitle, avatarUrl }: HomeHeaderPro
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#F7BE2C",
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
     paddingTop: 16,
     paddingBottom: 70,
     borderBottomLeftRadius: 20,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 12,
     color: "#000000",
     fontWeight: "400",
     lineHeight: 22,
