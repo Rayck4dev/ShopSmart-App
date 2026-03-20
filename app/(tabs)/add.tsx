@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -17,45 +17,6 @@ import FinalizeModal from "@/src/components/lists/FinalizeModal";
 export default function AddScreen() {
   const { state, actions } = useAddScreen();
   const [finalized, setFinalized] = useState(false);
-
-  const listHeader = useMemo(() => {
-    return (
-      <View className="px-6 pb-4">
-        <Text className="text-2xl font-bold text-orange-500 text-center mt-8 mb-2">
-          ➕ Nova Lista
-        </Text>
-
-        <ListNameInput
-          value={state.creatingListName}
-          onChange={actions.setCreatingListName}
-        />
-
-        <AddItemForm
-          {...state}
-          {...actions}
-          onAdd={actions.addPreviewItem}
-          onClear={() => actions.setName("")}
-          saving={false}
-        />
-
-        <Text className="font-bold text-gray-700 mt-8 mb-4 border-t border-gray-100 pt-4">
-          Itens na lista ({state.previewItems.length})
-        </Text>
-      </View>
-    );
-  }, [
-    state.creatingListName,
-    state.name,
-    state.categoryId,
-    state.saleType,
-    state.pricePerKg,
-    state.weight,
-    state.priceUnit,
-    state.quantity,
-    state.categories,
-    state.selectedCategory,
-    state.previewItems.length, 
-  ]);
 
   if (state.loading) {
     return (
@@ -92,7 +53,45 @@ export default function AddScreen() {
               state.previewItems.filter((p) => p._localId !== id),
             )
           }
-          ListHeaderComponent={listHeader}
+          ListHeaderComponent={
+            <View className="px-6 pb-4">
+              <Text className="text-2xl font-bold text-orange-500 text-center mt-20 mb-2">
+                ➕ Nova Lista
+              </Text>
+
+              <ListNameInput
+                value={state.creatingListName}
+                onChange={actions.setCreatingListName}
+              />
+
+              <AddItemForm
+                name={state.name}
+                setName={actions.setName}
+                categoryId={state.categoryId}
+                setCategoryId={actions.setCategoryId}
+                categories={state.categories}
+                saleType={state.saleType}
+                setSaleType={actions.setSaleType}
+                pricePerKg={state.pricePerKg}
+                setPricePerKg={actions.setPricePerKg}
+                weight={state.weight}
+                setWeight={actions.setWeight}
+                priceUnit={state.priceUnit}
+                setPriceUnit={actions.setPriceUnit}
+                quantity={state.quantity}
+                setQuantity={actions.setQuantity}
+                selectedCategory={state.selectedCategory}
+                calculateTotal={actions.calculateTotal}
+                onAdd={actions.addPreviewItem}
+                onClear={() => actions.setName("")}
+                saving={false}
+              />
+
+              <Text className="font-bold text-gray-700 mt-8 mb-4 border-t border-gray-100 pt-4">
+                Itens na lista ({state.previewItems.length})
+              </Text>
+            </View>
+          }
           contentContainerStyle={{ paddingBottom: 180 }}
         />
 
@@ -130,6 +129,12 @@ export default function AddScreen() {
           const item = state.previewItems.find((p) => p._localId === id);
           if (item) {
             actions.setName(item.title);
+            actions.setPricePerKg(item.pricePerKg || "");
+            actions.setWeight(item.weight || "");
+            actions.setPriceUnit(item.priceUnit || "");
+            actions.setQuantity(item.quantity || "");
+            actions.setSaleType(item.saleType);
+            actions.setCategoryId(item.category_id);
             actions.setPreviewItems(
               state.previewItems.filter((p) => p._localId !== id),
             );

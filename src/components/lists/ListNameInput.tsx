@@ -14,7 +14,7 @@ export default function ListNameInput({ value, onChange }: ListNameInputProps) {
         value={value}
         onChangeText={onChange}
         placeholder="Ex: Mercado do fim de semana"
-        className="border border-gray-200 rounded-lg px-3 py-2"
+        className="border border-gray-100 rounded-lg px-3 py-3 text-black font-bold"
         returnKeyType="done"
       />
     </View>

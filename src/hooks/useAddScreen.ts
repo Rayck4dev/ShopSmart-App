@@ -14,7 +14,7 @@ export function useAddScreen() {
   const [savingAll, setSavingAll] = useState(false);
 
   const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(""); 
   const [saleType, setSaleType] = useState<"peso" | "unidade">("peso");
   const [pricePerKg, setPricePerKg] = useState("");
   const [weight, setWeight] = useState("");
@@ -28,12 +28,9 @@ export function useAddScreen() {
           .from("categories")
           .select("*")
           .order("nome");
-
         if (error) throw error;
-
         if (data) {
           setCategories(data);
-          setCategoryId(data[0]?.id || "");
         }
       } catch (e: any) {
         console.error("Erro ao buscar categorias:", e.message);
@@ -46,44 +43,47 @@ export function useAddScreen() {
 
   const selectedCategory = categories.find((c) => c.id === categoryId);
 
-  useEffect(() => {
-    if (selectedCategory) {
-      setSaleType(selectedCategory.usa_valor_por_peso ? "peso" : "unidade");
+  const handleCategoryChange = (id: string) => {
+    setCategoryId(id);
+    const cat = categories.find((c) => c.id === id);
+
+    if (cat) {
+      setSaleType(cat.usa_valor_por_peso ? "peso" : "unidade");
     }
-  }, [categoryId]);
 
-  const parseMoney = (v: string) =>
-    Number(v.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0;
-
-  const handleWeightChange = (text: string) => {
-    const cleanText = text.replace(/\D/g, "");
-    const numberValue = Number(cleanText) / 1000;
-
-    const formatted = numberValue.toLocaleString("pt-BR", {
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
-    });
-
-    setWeight(formatted);
+    setPricePerKg("");
+    setWeight("");
+    setPriceUnit("");
+    setQuantity("");
   };
 
-  const parseWeight = (v: string) => {
+  const parseNumber = (v: string) => {
     if (!v) return 0;
-    return Number(v.replace(",", ".")) || 0;
+    return Number(v.replace(/\./g, "").replace(",", ".")) || 0;
+  };
+
+  const parseMoney = (v: string) => {
+    if (!v) return 0;
+    const clean = v.replace(/[^\d]/g, "");
+    return Number(clean) / 100 || 0;
   };
 
   const calculateTotal = useCallback(() => {
+    if (!categoryId) return 0; 
     if (saleType === "peso") {
-      return parseMoney(pricePerKg) * parseWeight(weight);
+      return parseMoney(pricePerKg) * parseNumber(weight);
     }
-    return parseMoney(priceUnit) * (Number(quantity) || 1);
-  }, [saleType, pricePerKg, weight, priceUnit, quantity]);
-
+    return parseMoney(priceUnit) * parseNumber(quantity);
+  }, [saleType, pricePerKg, weight, priceUnit, quantity, categoryId]);
 
   const addPreviewItem = () => {
-    if (!name.trim()) {
-      return Alert.alert("Ops!", "Dê um nome ao item antes de adicionar.");
-    }
+    if (!categoryId)
+      return Alert.alert("Ops!", "Selecione uma categoria primeiro.");
+    if (!name.trim()) return Alert.alert("Ops!", "Dê um nome ao item.");
+
+    const total = calculateTotal();
+    if (total <= 0)
+      return Alert.alert("Atenção", "O valor do item deve ser maior que zero.");
 
     const newItem: PreviewItem = {
       _localId: String(Date.now()),
@@ -95,7 +95,7 @@ export function useAddScreen() {
       weight,
       priceUnit,
       quantity,
-      total: calculateTotal(),
+      total,
     };
 
     setPreviewItems((prev) => [...prev, newItem]);
@@ -109,24 +109,20 @@ export function useAddScreen() {
   };
 
   const handleSaveAll = async () => {
-    if (!creatingListName.trim() || previewItems.length === 0) {
-      return Alert.alert("Erro", "Dê um nome à lista e adicione itens.");
-    }
-
+    if (!creatingListName.trim() || previewItems.length === 0) return;
     setSavingAll(true);
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) throw new Error("Usuário não logado.");
+      if (!user) throw new Error("Sessão expirada. Logue novamente.");
 
-      const { data: list, error: listError } = await supabase
+      const { data: list, error: e1 } = await supabase
         .from("lists")
         .insert([{ name: creatingListName, user_id: user.id }])
         .select("id")
         .single();
-
-      if (listError) throw listError;
+      if (e1) throw e1;
 
       const productsToInsert = previewItems.map((p) => ({
         title: p.title,
@@ -135,31 +131,27 @@ export function useAddScreen() {
         owner_id: user.id,
       }));
 
-      const { data: insertedProducts, error: prodError } = await supabase
+      const { data: prods, error: e2 } = await supabase
         .from("products")
         .insert(productsToInsert)
         .select("id");
+      if (e2 || !prods) throw e2 || new Error("Erro ao salvar produtos");
 
-      if (prodError) throw prodError;
+      const links = prods.map((prod, i) => ({
+        list_id: list.id,
+        product_id: prod.id,
+        quantity:
+          previewItems[i].saleType === "peso"
+            ? parseNumber(previewItems[i].weight)
+            : parseNumber(previewItems[i].quantity),
+      }));
 
-      const listProductsLinks = insertedProducts.map((prod, index) => {
-        const item = previewItems[index];
-        return {
-          list_id: list.id,
-          product_id: prod.id,
-          quantity:
-            item.saleType === "peso"
-              ? parseWeight(item.weight || "0")
-              : Number(item.quantity) || 1,
-        };
-      });
+      const { error: e3 } = await supabase.from("list_products").insert(links);
+      if (e3) throw e3;
 
-      await supabase.from("list_products").insert(listProductsLinks);
-
-      Alert.alert("Sucesso!", "Lista salva!");
-      router.back();
+      router.replace("/(tabs)/mylists");
     } catch (e: any) {
-      Alert.alert("Erro", e.message);
+      Alert.alert("Erro ao salvar", e.message);
     } finally {
       setSavingAll(false);
     }
@@ -184,10 +176,10 @@ export function useAddScreen() {
     actions: {
       setCreatingListName,
       setName,
-      setCategoryId,
+      setCategoryId: handleCategoryChange, 
       setSaleType,
       setPricePerKg,
-      setWeight: handleWeightChange,
+      setWeight,
       setPriceUnit,
       setQuantity,
       calculateTotal,

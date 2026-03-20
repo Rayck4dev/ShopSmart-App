@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { PreviewItem } from "@/src/types/list";
+import { formatWeight } from "@/src/utils/format";
 
 interface PreviewListProps {
   items: PreviewItem[];
@@ -18,43 +19,48 @@ export default function PreviewList({
   contentContainerStyle,
 }: PreviewListProps) {
   const renderItem = ({ item }: { item: PreviewItem }) => {
-    const isGram = item.weight?.startsWith("0,");
-    const displayWeight = isGram
-      ? `${item.weight.replace("0,", "").replace(/^0+/, "")}g`
-      : `${item.weight}kg`;
+    const displayWeight = formatWeight(item.weight);
 
     return (
-      <View className="bg-gray-50 rounded-lg p-3 mb-3 flex-row justify-between items-center mx-6">
+      <View className="bg-white rounded-xl p-4 mb-3 flex-row justify-between items-center mx-6 shadow-sm border border-gray-100">
         <View style={{ flex: 1 }}>
-          <Text className="font-semibold">
+          <Text className="font-bold text-gray-800 text-base">
             {item.category_emoji ? `${item.category_emoji} ` : ""}
             {item.title}
           </Text>
-          <Text className="text-gray-500 text-xs">
+
+          <Text className="text-gray-500 text-xs mt-1">
             {item.saleType === "peso"
-              ? `Peso: ${displayWeight} • ${item.pricePerKg}/kg`
-              : `Qtd: ${item.quantity} • ${item.priceUnit}/und`}
+              ? `Peso: ${displayWeight} • R$ ${item.pricePerKg}/kg`
+              : `Qtd: ${item.quantity} • R$ ${item.priceUnit}/und`}
           </Text>
         </View>
-        <View className="items-end ml-3">
-          <Text className="font-bold text-orange-600">
+
+        <View className="items-end ml-4">
+          <Text className="font-bold text-orange-600 text-base">
             {new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
             }).format(item.total)}
           </Text>
-          <View className="flex-row mt-2">
+
+          <View className="flex-row mt-3">
             <TouchableOpacity
               onPress={() => onEdit(item._localId)}
-              className="px-3 py-1 mr-2 bg-orange-100 rounded"
+              className="px-3 py-1.5 mr-2 bg-orange-100 rounded-lg"
             >
-              <Text className="text-orange-600 text-xs font-bold">Editar</Text>
+              <Text className="text-orange-600 text-[10px] font-bold uppercase">
+                Editar
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => onRemove(item._localId)}
-              className="px-3 py-1 bg-red-100 rounded"
+              className="px-3 py-1.5 bg-red-100 rounded-lg"
             >
-              <Text className="text-red-600 text-xs font-bold">Excluir</Text>
+              <Text className="text-red-600 text-[10px] font-bold uppercase">
+                Excluir
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -68,14 +74,12 @@ export default function PreviewList({
       keyExtractor={(i) => i._localId}
       renderItem={renderItem}
       ListHeaderComponent={ListHeaderComponent}
-      contentContainerStyle={contentContainerStyle}
-      scrollEnabled={true}
+      contentContainerStyle={[{ paddingBottom: 120 }, contentContainerStyle]}
+      showsVerticalScrollIndicator={false}
       ListEmptyComponent={
-        items.length === 0 ? (
-          <Text className="text-center text-gray-400 mt-4">
-            Nenhum item adicionado ainda.
-          </Text>
-        ) : null
+        <Text className="text-center text-gray-400 mt-10">
+          Nenhum item na lista ainda.
+        </Text>
       }
     />
   );

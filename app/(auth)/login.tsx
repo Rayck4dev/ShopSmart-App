@@ -1,13 +1,14 @@
+import React, { useState } from "react";
+import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { Eye, EyeOff } from "lucide-react-native";
+
 import Button from "@/src/components/auth/Button";
 import GoogleButton from "@/src/components/auth/GoogleButton";
 import Input from "@/src/components/auth/Input";
 import Logo from "@/src/components/auth/Logo";
 import { signInWithGoogle } from "@/src/lib/googleAuth";
 import { supabase } from "@/src/lib/supabaseClient";
-import { Link, useRouter } from "expo-router";
-import { Eye, EyeOff } from "lucide-react-native";
-import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Login() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function Login() {
       if (!profile?.username) {
         router.replace("/chooseusername");
       } else {
-        router.replace("/profile");
+        router.replace("/(tabs)/home");
       }
     }
 
@@ -68,7 +69,7 @@ export default function Login() {
         if (!profile?.username) {
           router.replace("/chooseusername");
         } else {
-          router.replace("/profile");
+          router.replace("/(tabs)/home");
         }
       }
     } catch (err: any) {
@@ -90,10 +91,12 @@ export default function Login() {
         placeholder="E-mail"
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
         className="mb-4"
       />
 
-      <View className="w-full mb-6 relative">
+      <View className="w-full relative">
         <Input
           placeholder="Senha"
           secureTextEntry={!showPassword}
@@ -102,7 +105,7 @@ export default function Login() {
         />
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
-          style={{ position: "absolute", right: 10, top: 12 }}
+          style={{ position: "absolute", right: 15, top: 10 }}
         >
           {showPassword ? (
             <Eye size={22} color="#666" />
@@ -112,20 +115,42 @@ export default function Login() {
         </TouchableOpacity>
       </View>
 
-      {error && <Text className="text-red-500 mb-4">{error}</Text>}
+      <View className="w-full items-end mt-2 mb-6">
+        <Link href="/(auth)/forgot-password" asChild>
+          <TouchableOpacity>
+            <Text className="text-light-nav text-sm font-medium">
+              Esqueceu sua senha?
+            </Text>
+          </TouchableOpacity>
+        </Link>
+      </View>
+
+      {error && (
+        <View className="bg-red-100 p-3 rounded-lg mb-4 w-full">
+          <Text className="text-red-600 text-center text-sm">{error}</Text>
+        </View>
+      )}
 
       <Button
         title={loading ? "Carregando..." : "Entrar"}
         onPress={handleLogin}
         className="mb-4"
+        disabled={loading}
       />
+
+      <View className="flex-row items-center my-4 w-full">
+        <View className="flex-1 h-[1px] bg-gray-300" />
+        <Text className="mx-4 text-gray-400">ou</Text>
+        <View className="flex-1 h-[1px] bg-gray-300" />
+      </View>
 
       <GoogleButton onPress={handleGoogleLogin} />
 
-      <Link href="/register" asChild>
-        <TouchableOpacity>
-          <Text className="text-light-nav mt-6">
-            Ainda não tem conta? Cadastre-se
+      <Link href="/(auth)/register" asChild>
+        <TouchableOpacity className="mt-8">
+          <Text className="text-gray-500">
+            Ainda não tem conta?{" "}
+            <Text className="text-light-nav font-bold">Cadastre-se</Text>
           </Text>
         </TouchableOpacity>
       </Link>

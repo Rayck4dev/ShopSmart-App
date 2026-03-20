@@ -4,43 +4,41 @@ type MoneyInputProps = {
   label: string;
   value: string;
   onChange: (val: string) => void;
-};
-
-const formatMoneyInput = (text: string) => {
-  const digits = text.replace(/\D/g, "");
-  if (!digits) return "";
-
-  const number = parseFloat(digits) / 100;
-
-  return (
-    "R$ " +
-    new Intl.NumberFormat("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(number)
-  );
+  placeholder?: string;
 };
 
 export default function MoneyInput({
   label,
   value,
   onChange,
+  placeholder = "R$ 0,00",
 }: MoneyInputProps) {
   const handleChange = (text: string) => {
-    const formatted = formatMoneyInput(text);
-    onChange(formatted); 
+    const digits = text.replace(/\D/g, "");
+    if (!digits) {
+      onChange("");
+      return;
+    }
+
+    const number = parseFloat(digits) / 100;
+    const formatted = number.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    onChange(formatted);
   };
 
   return (
     <View className="mb-4 mt-2">
-      <Text className="text-black mb-2 font-bold">{label}</Text>
+      <Text className="text-gray-700 mb-2 font-bold ml-1">{label}</Text>
       <TextInput
-        value={value} 
+        value={value}
         onChangeText={handleChange}
         keyboardType="numeric"
-        placeholder="R$ 0,00"
+        placeholder={placeholder}
         placeholderTextColor="#9ca3af"
-        className="bg-gray-800 text-white font-bold px-4 py-3 rounded-lg"
+        className="bg-gray-100 text-black font-bold px-4 py-4 rounded-xl border border-gray-200"
       />
     </View>
   );

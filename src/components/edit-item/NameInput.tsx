@@ -17,9 +17,9 @@ export default function NameInput({
       <TextInput
         value={value}
         onChangeText={onChange}
-        placeholder="ex: tomate"
+        placeholder="Ex: Tomate"
         placeholderTextColor="#888"
-        className="bg-gray-800 text-white font-bold px-4 py-3 rounded-lg"
+        className="bg-gray-100 text-black font-bold px-4 py-3 rounded-lg border border-gray-200"
       />
     </View>
   );

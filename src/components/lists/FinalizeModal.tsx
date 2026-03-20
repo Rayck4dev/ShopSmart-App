@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { PreviewItem } from "@/src/types/list";
+import { formatWeight } from "@/src/utils/format";
 
 export interface FinalizeModalProps {
   visible: boolean;
@@ -31,6 +32,13 @@ export default function FinalizeModal({
   onClose,
   saving,
 }: FinalizeModalProps) {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
+
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
       <KeyboardAvoidingView
@@ -50,18 +58,18 @@ export default function FinalizeModal({
               <Text className="font-bold text-base">
                 {item.category_emoji} {item.title}
               </Text>
+
               <Text className="text-gray-500">
                 {item.saleType === "peso"
-                  ? `${item.weight}kg x ${item.pricePerKg}`
-                  : `${item.quantity} un x ${item.priceUnit}`}
+                  ? `${formatWeight(item.weight)} x ${item.pricePerKg}` 
+                  : `${item.quantity} un x R$ ${item.priceUnit}`}
               </Text>
+
               <View className="flex-row justify-between items-center mt-2">
                 <Text className="font-bold text-orange-600">
-                  {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(item.total)}
+                  {formatCurrency(item.total)}
                 </Text>
+
                 <TouchableOpacity onPress={() => onRemove(item._localId)}>
                   <Text className="text-red-500 font-semibold">Remover</Text>
                 </TouchableOpacity>
@@ -69,14 +77,13 @@ export default function FinalizeModal({
             </View>
           ))}
 
-          <View className="mt-6 p-4 bg-orange-50 rounded-xl">
-            <View className="flex-row justify-between">
-              <Text className="font-bold text-lg">Total Geral:</Text>
-              <Text className="font-bold text-lg text-orange-700">
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(total)}
+          <View className="mt-6 p-4 bg-orange-50 rounded-xl border border-orange-100">
+            <View className="flex-row justify-between items-center">
+              <Text className="font-bold text-lg text-gray-700">
+                Total Geral:
+              </Text>
+              <Text className="font-bold text-2xl text-orange-700">
+                {formatCurrency(total)}
               </Text>
             </View>
           </View>
@@ -84,15 +91,17 @@ export default function FinalizeModal({
           <TouchableOpacity
             onPress={onSave}
             disabled={saving}
-            className={`mt-8 py-4 rounded-xl items-center ${saving ? "bg-gray-400" : "bg-green-600"}`}
+            className={`mt-8 py-4 rounded-xl items-center shadow-sm ${
+              saving ? "bg-gray-400" : "bg-green-600"
+            }`}
           >
             <Text className="text-white font-bold text-lg">
               {saving ? "Salvando..." : "Confirmar"}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={onClose} className="mt-4 py-2">
-            <Text className="text-center text-gray-500">
+          <TouchableOpacity onPress={onClose} className="mt-4 py-2 mb-10">
+            <Text className="text-center text-gray-500 font-medium">
               Voltar para a edição
             </Text>
           </TouchableOpacity>

@@ -88,12 +88,6 @@ export default function Register() {
           .select("username")
           .eq("id", session.user.id)
           .single();
-
-        if (!profile?.username) {
-          router.replace("/chooseusername");
-        } else {
-          router.replace("/profile");
-        }
       }
     } catch (err: any) {
       if (err.message !== "Login cancelado.") {
@@ -141,7 +135,7 @@ export default function Register() {
         />
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
-          style={{ position: "absolute", right: 10, top: 12 }}
+          style={{ position: "absolute", right: 15, top: 10 }}
         >
           {showPassword ? (
             <Eye size={22} color="#666" />
@@ -168,7 +162,7 @@ export default function Register() {
         />
         <TouchableOpacity
           onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-          style={{ position: "absolute", right: 10, top: 12 }}
+          style={{ position: "absolute", right: 15, top: 10 }}
         >
           {showConfirmPassword ? (
             <Eye size={22} color="#666" />
@@ -186,10 +180,19 @@ export default function Register() {
         className="mb-4"
       />
 
+      <View className="flex-row items-center my-4 w-full">
+        <View className="flex-1 h-[1px] bg-gray-300" />
+        <Text className="mx-4 text-gray-400">ou</Text>
+        <View className="flex-1 h-[1px] bg-gray-300" />
+      </View>
+
       <GoogleButton onPress={handleGoogleLogin} />
 
-      <TouchableOpacity onPress={() => router.push("/login")}>
-        <Text className="text-light-nav mt-6">Já tem conta? Faça login</Text>
+      <TouchableOpacity onPress={() => router.push("/login")} className="mt-8">
+        <Text className="text-gray-500">
+          Já tem conta?{" "}
+          <Text className="text-light-nav font-bold">Faça login</Text>
+        </Text>
       </TouchableOpacity>
     </View>
   );
