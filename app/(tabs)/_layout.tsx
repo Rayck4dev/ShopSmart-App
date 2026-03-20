@@ -1,8 +1,8 @@
 import { Tabs } from "expo-router";
-import { View, TouchableOpacity, Text } from "react-native";
 import { Home, Plus, User } from "lucide-react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
-function CustomTabBar({ state, descriptors, navigation }) {
+function CustomTabBar({state, descriptors, navigation}: any) {
   return (
     <View
       style={{
@@ -14,7 +14,8 @@ function CustomTabBar({ state, descriptors, navigation }) {
         elevation: 5,
       }}
     >
-      {state.routes.map((route, index) => {
+      {}
+      {state.routes.map((route: any, index: number) => {
         const isFocused = state.index === index;
 
         const onPress = () => {

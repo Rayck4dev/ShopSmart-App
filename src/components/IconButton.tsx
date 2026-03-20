@@ -1,14 +1,14 @@
-import { TouchableOpacity, Text, View } from "react-native";
 import {
+  Bell,
+  Check,
+  Headphones,
   LucideIcon,
   Pencil,
-  Bell,
-  Sliders,
-  Headphones,
   Power,
+  Sliders,
   Trash,
-  Check,
 } from "lucide-react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface IconButtonProps {
   icon:
