@@ -1,10 +1,10 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-type PaginationDotsProps = {
+interface PaginationDotsProps {
   total: number;
   activeIndex: number;
-};
+}
 
 export default function PaginationDots({
   total,

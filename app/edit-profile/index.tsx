@@ -5,9 +5,10 @@ import { supabase } from "@/src/lib/supabaseClient";
 import { router, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, Text, View } from "react-native";
+import { UserProfile } from "@/src/types/auth";
 
 export default function EditProfile() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

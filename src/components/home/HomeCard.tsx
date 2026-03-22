@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-type HomeCardProps = {
+interface HomeCardProps {
   title: string;
   iconType: "material" | "ion";
   iconName: string;

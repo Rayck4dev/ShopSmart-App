@@ -1,11 +1,11 @@
 import React from "react";
 import { Pressable, Text, StyleSheet, ViewStyle } from "react-native";
 
-type PrimaryButtonProps = {
+interface PrimaryButtonProps {
   title: string;
   onPress: () => void;
   style?: ViewStyle;
-};
+}
 
 export default function PrimaryButton({
   title,

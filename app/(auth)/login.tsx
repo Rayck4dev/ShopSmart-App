@@ -34,52 +34,31 @@ export default function Login() {
       return;
     }
 
-    const user = data.user;
-    if (user) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("username")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile?.username) {
-        router.replace("/chooseusername");
-      } else {
-        router.replace("/(tabs)/home");
-      }
+    if (data.user) {
+      router.replace("/(tabs)/home");
     }
 
     setLoading(false);
   };
 
   const handleGoogleLogin = async () => {
-    setError(null);
-    setLoading(true);
+  setError(null);
+  setLoading(true);
 
-    try {
-      const session = await signInWithGoogle();
+  try {
+    const session = await signInWithGoogle();
 
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("id", session.user.id)
-          .single();
-
-        if (!profile?.username) {
-          router.replace("/chooseusername");
-        } else {
-          router.replace("/(tabs)/home");
-        }
-      }
-    } catch (err: any) {
-      if (err.message !== "Login cancelado.") {
-        setError(err.message ?? "Erro ao fazer login com Google.");
-      }
-    } finally {
-      setLoading(false);
+    if (session?.user) {
+      router.replace("/(tabs)/home");
     }
-  };
+  } catch (err: any) {
+    if (err.message !== "Login cancelado.") {
+      setError(err.message ?? "Erro ao fazer login com Google.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <View className="flex-1 items-center justify-center bg-light-background px-6">

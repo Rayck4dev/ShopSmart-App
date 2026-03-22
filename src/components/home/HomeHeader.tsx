@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
-type HomeHeaderProps = {
+interface HomeHeaderProps {
   title: string;
   subtitle: string;
   avatarUrl: string;

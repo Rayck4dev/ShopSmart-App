@@ -5,9 +5,10 @@ import { Bell, Headphones, Pencil, Power, Sliders } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import ProfileHeader from "@/src/components/ui/ProfileHeader";
+import { UserProfile } from "@/src/types/auth";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -30,8 +31,9 @@ export default function Profile() {
             name: user.user_metadata?.name || "",
           });
           setProfile({
+            id: user.id,
             username: "",
-            email: user.email,
+            email: user.email || "",
             name: user.user_metadata?.name || "",
           });
         } else {

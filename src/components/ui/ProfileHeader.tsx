@@ -1,12 +1,9 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Settings } from "lucide-react-native";
+import { UserProfile } from "@/src/types/auth";
 
 interface ProfileHeaderProps {
-  profile: {
-    username: string;
-    email: string;
-    name: string;
-  };
+  profile: UserProfile;
   onSettings: () => void;
 }
 

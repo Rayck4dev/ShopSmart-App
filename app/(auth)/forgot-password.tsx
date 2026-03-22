@@ -8,6 +8,12 @@ import Input from "@/src/components/auth/Input";
 import Button from "@/src/components/auth/Button";
 import Logo from "@/src/components/auth/Logo";
 
+interface UserProfile {
+  username: string;
+  email: string;
+  name: string;
+}
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);

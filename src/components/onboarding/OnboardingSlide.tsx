@@ -7,11 +7,11 @@ import {
   ImageSourcePropType,
 } from "react-native";
 
-type OnboardingSlideProps = {
+interface OnboardingSlideProps {
   title: string;
   subtitle: string;
   image: ImageSourcePropType;
-};
+}
 
 export default function OnboardingSlide({
   title,
