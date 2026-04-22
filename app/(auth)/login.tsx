@@ -1,8 +1,6 @@
 import Button from "@/src/components/auth/Button";
-import GoogleButton from "@/src/components/auth/GoogleButton";
 import Input from "@/src/components/auth/Input";
 import Logo from "@/src/components/auth/Logo";
-import { signInWithGoogle } from "@/src/lib/googleAuth";
 import { supabase } from "@/src/lib/supabaseClient";
 import { Link, useRouter } from "expo-router";
 import { Eye, EyeOff } from "lucide-react-native";
@@ -33,51 +31,11 @@ export default function Login() {
       return;
     }
 
-    const user = data.user;
-    if (user) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("username")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile?.username) {
-        router.replace("/chooseusername");
-      } else {
-        router.replace("/profile");
-      }
+    if (data.user) {
+      router.replace("/home");
     }
 
     setLoading(false);
-  };
-
-  const handleGoogleLogin = async () => {
-    setError(null);
-    setLoading(true);
-
-    try {
-      const session = await signInWithGoogle();
-
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("id", session.user.id)
-          .single();
-
-        if (!profile?.username) {
-          router.replace("/chooseusername");
-        } else {
-          router.replace("/profile");
-        }
-      }
-    } catch (err: any) {
-      if (err.message !== "Login cancelado.") {
-        setError(err.message ?? "Erro ao fazer login com Google.");
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -91,6 +49,8 @@ export default function Login() {
         value={email}
         onChangeText={setEmail}
         className="mb-4"
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <View className="w-full mb-6 relative">
@@ -112,15 +72,14 @@ export default function Login() {
         </TouchableOpacity>
       </View>
 
-      {error && <Text className="text-red-500 mb-4">{error}</Text>}
+      {error && <Text className="text-red-500 mb-4 text-center">{error}</Text>}
 
       <Button
         title={loading ? "Carregando..." : "Entrar"}
         onPress={handleLogin}
+        disabled={loading}
         className="mb-4"
       />
-
-      <GoogleButton onPress={handleGoogleLogin} />
 
       <Link href="/register" asChild>
         <TouchableOpacity>

@@ -61,7 +61,7 @@ export default function RootLayout() {
     }
   } else {
     if (inAuthGroup || inIntroGroup) {
-      return <Redirect href="/(tabs)/home" />;
+      return <Redirect href="/home" />;
     }
   }
 

@@ -2,7 +2,6 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  StyleSheet,
   Text,
   TouchableOpacity,
   Alert,
@@ -35,20 +34,22 @@ export default function ListDetailScreen() {
 
   if (loading)
     return (
-      <View style={styles.center}>
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator color="#FF7A00" size="large" />
       </View>
     );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View className="flex-1 bg-[#F8F9FA]">
+      <View className="flex-row justify-between items-center pt-[60px] px-4 pb-5 bg-[#FF7A00]">
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{listName}</Text>
-        <TouchableOpacity onPress={deleteList} style={styles.deleteBtn}>
-          <Text style={styles.deleteText}>Apagar</Text>
+        <Text className="text-white text-lg font-bold flex-1 mx-2.5">
+          {listName}
+        </Text>
+        <TouchableOpacity onPress={deleteList} className="flex-row items-center bg-white/20 p-2 rounded-lg">
+          <Text className="text-white text-[11px] font-bold mr-1">Apagar</Text>
           <Ionicons name="trash-outline" size={18} color="white" />
         </TouchableOpacity>
       </View>
@@ -65,10 +66,13 @@ export default function ListDetailScreen() {
         )}
       />
 
-      <View style={styles.footer}>
-        <View style={styles.totalRow}>
-          <Text style={styles.totalLabel}>Total da Lista:</Text>
-          <Text style={styles.totalValue}>
+      <View 
+        className="absolute bottom-0 w-full bg-white p-5 rounded-t-[30px]"
+        style={{ elevation: 20, shadowColor: '#000', shadowOffset: { width: 0, height: -10 }, shadowOpacity: 0.1, shadowRadius: 10 }}
+      >
+        <View className="flex-row justify-between mb-[15px]">
+          <Text className="text-[#666] font-semibold">Total da Lista:</Text>
+          <Text className="text-[22px] font-black">
             {new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
@@ -76,72 +80,14 @@ export default function ListDetailScreen() {
           </Text>
         </View>
         <TouchableOpacity
-          style={[styles.finishButton, !isAllDone && styles.finishBtnOff]}
+          className={`h-14 rounded-2xl justify-center items-center ${
+            !isAllDone ? 'bg-[#DDD]' : 'bg-[#FF7A00]'
+          }`}
           onPress={() => router.back()}
         >
-          <Text style={styles.finishText}>Finalizar Compras</Text>
+          <Text className="text-white font-bold text-base">Finalizar Compras</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F8F9FA" },
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: 60,
-    paddingHorizontal: 16,
-    paddingBottom: 20,
-    backgroundColor: "#FF7A00",
-  },
-  headerTitle: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    flex: 1,
-    marginHorizontal: 10,
-  },
-  deleteBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    padding: 8,
-    borderRadius: 8,
-  },
-  deleteText: {
-    color: "white",
-    fontSize: 11,
-    fontWeight: "bold",
-    marginRight: 4,
-  },
-  footer: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    backgroundColor: "white",
-    padding: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    elevation: 20,
-  },
-  totalRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  totalLabel: { color: "#666", fontWeight: "600" },
-  totalValue: { fontSize: 22, fontWeight: "900" },
-  finishButton: {
-    backgroundColor: "#FF7A00",
-    height: 56,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  finishBtnOff: { backgroundColor: "#DDD" },
-  finishText: { color: "white", fontWeight: "bold", fontSize: 16 },
-});

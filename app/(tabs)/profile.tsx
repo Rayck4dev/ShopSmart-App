@@ -1,4 +1,3 @@
-import ThemeToggleButton from "@/src/components/ui/ThemeToggleButton";
 import { supabase } from "@/src/lib/supabaseClient";
 import { router } from "expo-router";
 import { Bell, Headphones, Pencil, Power, Sliders } from "lucide-react-native";
@@ -77,7 +76,6 @@ export default function Profile() {
             <Text className="ml-2 text-white font-semibold">Editar Perfil</Text>
           </TouchableOpacity>
 
-          <ThemeToggleButton />
 
           <TouchableOpacity
             className="flex-row items-center bg-gray-100 p-4 rounded-lg mb-3 mt-4"

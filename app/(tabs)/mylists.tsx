@@ -88,7 +88,7 @@ export default function MyListsScreen() {
             nome={item.name}
             itens={item.done}
             total={item.total}
-            onPress={() => router.push(`/listas/${item.id}`)} 
+            onPress={() => router.push(`/listas/${item.id}`)}
           />
         )}
         ListEmptyComponent={

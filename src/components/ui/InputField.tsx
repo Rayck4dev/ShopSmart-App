@@ -3,7 +3,7 @@ import { Text, TextInput } from "react-native";
 interface InputFieldProps {
   label: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   editable?: boolean;
 }
 

@@ -1,8 +1,8 @@
 import Button from "@/src/components/auth/Button";
-import GoogleButton from "@/src/components/auth/GoogleButton";
+
 import Input from "@/src/components/auth/Input";
 import Logo from "@/src/components/auth/Logo";
-import { signInWithGoogle } from "@/src/lib/googleAuth";
+
 import { supabase } from "@/src/lib/supabaseClient";
 import { useRouter } from "expo-router";
 import { Eye, EyeOff } from "lucide-react-native";
@@ -73,35 +73,6 @@ export default function Register() {
     }
 
     setLoading(false);
-  };
-
-  const handleGoogleLogin = async () => {
-    setError(null);
-    setLoading(true);
-
-    try {
-      const session = await signInWithGoogle();
-
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("username")
-          .eq("id", session.user.id)
-          .single();
-
-        if (!profile?.username) {
-          router.replace("/chooseusername");
-        } else {
-          router.replace("/profile");
-        }
-      }
-    } catch (err: any) {
-      if (err.message !== "Login cancelado.") {
-        setError(err.message ?? "Erro ao fazer login com Google.");
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -186,7 +157,7 @@ export default function Register() {
         className="mb-4"
       />
 
-      <GoogleButton onPress={handleGoogleLogin} />
+
 
       <TouchableOpacity onPress={() => router.push("/login")}>
         <Text className="text-light-nav mt-6">Já tem conta? Faça login</Text>

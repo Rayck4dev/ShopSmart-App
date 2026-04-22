@@ -54,7 +54,7 @@ export default function AddScreen() {
     state.quantity,
     state.categories,
     state.selectedCategory,
-    state.previewItems.length, 
+    state.previewItems.length,
   ]);
 
   if (state.loading) {
