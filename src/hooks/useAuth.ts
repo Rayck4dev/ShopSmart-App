@@ -54,18 +54,13 @@ export function useAuth() {
     return { user: data.user ?? undefined };
   };
 
-  const signInWithGoogle = async (): Promise<AuthResult> => {
+  const signOut = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: "https://lxurqoggpazpjmoilbrg.supabase.co/auth/v1/callback",
-      },
-    });
+    const { error } = await supabase.auth.signOut();
     setLoading(false);
     if (error) return { error: error.message };
-    return { user: user ?? undefined };
+    return {};
   };
-
-  return { signUp, signIn, signInWithGoogle, loading, user };
+  
+  return { signUp, signIn, signOut, loading, user };
 }

@@ -38,17 +38,24 @@ export function useListDetails(id: string) {
       .from("products")
       .update({ done: !currentDone })
       .eq("id", productId);
+
     if (!error) {
       setProducts((prev) =>
         prev.map((p) =>
           p.id === productId ? { ...p, done: !currentDone } : p,
         ),
       );
+      return true; 
     }
+    return false; 
   };
 
   const listTotalValue = useMemo(() => {
-    return products.reduce((acc, curr) => acc + (curr.price || 0), 0);
+    return products.reduce((acc, curr) => {
+      const price = curr.price || 0;
+      const qty = curr.quantity || 1;
+      return acc + price * qty;
+    }, 0);
   }, [products]);
 
   const isAllDone = products.length > 0 && products.every((p) => p.done);

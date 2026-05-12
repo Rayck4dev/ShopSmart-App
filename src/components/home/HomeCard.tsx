@@ -1,12 +1,11 @@
 import React from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 type HomeCardProps = {
   title: string;
   iconType: "material" | "ion";
   iconName: string;
-  badgeIcon: string;
   onPress: () => void;
 };
 
@@ -14,62 +13,24 @@ export default function HomeCard({
   title,
   iconType,
   iconName,
-  badgeIcon,
   onPress,
 }: HomeCardProps) {
   return (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8} onPress={onPress}>
-      <View style={styles.iconCircle}>
+    <TouchableOpacity
+      className="flex-1 bg-white rounded-3xl py-6 px-4 items-center shadow-sm border border-gray-100"
+      activeOpacity={0.8}
+      onPress={onPress}
+    >
+      <View className="w-20 h-20 rounded-full bg-orange-50 items-center justify-center mb-4">
         {iconType === "material" ? (
-          <MaterialIcons
-            name={iconName as keyof typeof MaterialIcons.glyphMap}
-            size={42}
-            color="#C47B00"
-          />
+          <MaterialIcons name={iconName as any} size={38} color="#f97316" />
         ) : (
-          <Ionicons
-            name={iconName as keyof typeof Ionicons.glyphMap}
-            size={42}
-            color="#C47B00"
-          />
+          <Ionicons name={iconName as any} size={38} color="#f97316" />
         )}
       </View>
-
-      <Text style={styles.cardText}>{title}</Text>
+      <Text className="text-lg font-bold text-gray-800 text-center">
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    borderRadius: 22,
-    paddingVertical: 20,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    shadowColor: "#000000",
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 10,
-    elevation: 8,
-  },
-
-  iconCircle: {
-    width: 92,
-    height: 92,
-    borderRadius: 46,
-    backgroundColor: "#f8e9c5",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 14,
-    position: "relative",
-  },
-
-  cardText: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#000000",
-    textAlign: "center",
-  },
-});

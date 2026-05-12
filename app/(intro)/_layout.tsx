@@ -4,6 +4,7 @@ export default function IntroLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="onboarding" />
+      
     </Stack>
   );
 }
