@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { Slot, useSegments, Redirect } from "expo-router";
 import { supabase } from "@/src/lib/supabaseClient";
-import type { Session } from "@supabase/supabase-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, ActivityIndicator, Platform } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
+import type { Session } from "@supabase/supabase-js";
 import * as NavigationBar from "expo-navigation-bar";
+import { Redirect, Slot, useSegments } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Platform, View } from "react-native";
 
 import "@/src/styles/global.css";
 import {
-  useFonts,
   Montserrat_400Regular,
   Montserrat_500Medium,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
   Montserrat_800ExtraBold,
   Montserrat_900Black,
+  useFonts,
 } from "@expo-google-fonts/montserrat";
 
 SplashScreen.preventAutoHideAsync();
@@ -108,7 +108,7 @@ export default function RootLayout() {
     }
   } else {
     if (inAuthGroup || inIntroGroup) {
-      return <Redirect href="/home" />;
+      return <Redirect href="/(tabs)/home" />;
     }
   }
 

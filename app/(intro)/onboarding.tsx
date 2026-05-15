@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -44,10 +44,10 @@ export default function Onboarding() {
 
   return (
     <LinearGradient
-      colors={["#f9bf10", "#ffffff"]}
+      colors={["#f9bf10", "#F6F1EE"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}
-      style={styles.container}
+      className="flex-1 items-center justify-center px-[30px]"
     >
       <OnboardingSlide
         title={screens[step].title}
@@ -55,18 +55,13 @@ export default function Onboarding() {
         image={screens[step].image}
       />
 
-      <PrimaryButton title={screens[step].button} onPress={next} />
+      <View className="w-full mt-10">
+        <PrimaryButton title={screens[step].button} onPress={next} />
+      </View>
 
-      <PaginationDots total={screens.length} activeIndex={step} />
+      <View className="mt-8">
+        <PaginationDots total={screens.length} activeIndex={step} />
+      </View>
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 30,
-  },
-});

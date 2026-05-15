@@ -11,7 +11,7 @@ import {
 import { router, Stack } from "expo-router";
 import { supabase } from "@/src/lib/supabaseClient";
 
- import PasswordField from "@/src/components/aut/PasswordField";
+ import PasswordField from "@/src/components/auth/PasswordField";
 import SaveButton from "@/src/components/ui/SaveButton";
 import InputField from "@/src/components/ui/InputField";
 

@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
-  StyleSheet,
   RefreshControl,
 } from "react-native";
 import { supabase } from "@/src/lib/supabaseClient";
@@ -59,16 +58,19 @@ export default function MyListsScreen() {
     fetchLists();
   }, []);
 
-  if (loading)
+  // Tela de Loading centralizada com NativeWind
+  if (loading) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#FF7A00" />
+      <View className="flex-1 justify-center items-center bg-background">
+        <ActivityIndicator size="large" color="#FB923C" />
       </View>
     );
+  }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#F8F9FA" }}>
-      <Header />
+    <View className="flex-1 bg-background">
+      <Header title="Minhas Listas" subtitle="Organize suas compras" />
+
       <FlatList
         data={lists}
         keyExtractor={(item) => item.id}
@@ -80,33 +82,28 @@ export default function MyListsScreen() {
               setRefreshing(true);
               fetchLists();
             }}
-            tintColor="#FF7A00"
+            tintColor="#FB923C"
           />
         }
         renderItem={({ item }) => (
-          <ListCard
-            nome={item.name}
-            itens={item.done}
-            total={item.total}
-            onPress={() => router.push(`/listas/${item.id}`)}
-          />
+          <View className="mb-4">
+            <ListCard
+              nome={item.name}
+              itens={item.done}
+              total={item.total}
+              // Ajustado para o padrão de rotas que você está usando (confirme se a pasta é listas ou (list))
+              onPress={() => router.push(`/listas/${item.id}`)}
+            />
+          </View>
         )}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>
-            Toque no + para criar sua primeira lista!
-          </Text>
+          <View className="mt-10 items-center">
+            <Text className="text-nav text-center text-base font-medium">
+              Toque no + para criar sua primeira lista!
+            </Text>
+          </View>
         }
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
-  emptyText: {
-    textAlign: "center",
-    color: "#999",
-    marginTop: 40,
-    fontSize: 16,
-  },
-});

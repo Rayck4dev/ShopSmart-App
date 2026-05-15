@@ -32,17 +32,16 @@ export default function Login() {
     }
 
     if (data.user) {
-      router.replace("/home");
+      router.replace("/(tabs)/home");
     }
-
     setLoading(false);
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-light-background px-6">
+    <View className="flex-1 items-center justify-center bg-[#F6F1EE] px-6">
       <Logo />
 
-      <Text className="text-light-text text-lg mb-6">Bem-vindo!</Text>
+      <Text className="text-text text-lg mb-6">Bem-vindo!</Text>
 
       <Input
         placeholder="E-mail"
@@ -83,7 +82,7 @@ export default function Login() {
 
       <Link href="/register" asChild>
         <TouchableOpacity>
-          <Text className="text-light-nav mt-6">
+          <Text className="text-nav mt-6">
             Ainda não tem conta? Cadastre-se
           </Text>
         </TouchableOpacity>

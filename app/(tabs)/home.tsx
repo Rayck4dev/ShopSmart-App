@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, View, Alert, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { useRouter } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import { supabase } from "@/src/lib/supabaseClient";
 import * as Location from "expo-location";
 import { MapPin } from "lucide-react-native";
@@ -11,7 +11,7 @@ import { useFocusEffect } from "expo-router";
 
 import HomeHeader from "@/src/components/home/HomeHeader";
 import HomeCard from "@/src/components/home/HomeCard";
-import { LocationMapCard } from "@/src/components/home/LocationCard";
+// import { LocationMapCard } from "@/src/components/home/LocationCard";
 import { GamificationCard } from "@/src/components/profile/GamificationCard";
 
 export default function HomeScreen() {
@@ -141,12 +141,12 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          <LocationMapCard
+          {/* <LocationMapCard
             address={address}
             location={coords}
             loading={loadingLoc}
             onGetLocation={handleGetLocation}
-          />
+          /> */}
         </View>
       </ScrollView>
     </View>

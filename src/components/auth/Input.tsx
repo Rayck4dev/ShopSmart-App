@@ -8,11 +8,11 @@ export default function Input({ className, ...props }: InputProps) {
   return (
     <TextInput
       {...props}
-      className={`w-full px-4 py-3 rounded-lg border 
-        border-light-nav dark:border-dark-nav 
-        text-light-text dark:text-dark-text 
-        bg-white dark:bg-gray-800 ${className}`}
-      placeholderTextColor="#9CA3AF" 
+      className={` font-semibold w-full px-4 py-3 rounded-lg border 
+        border-[#b37c4c]
+        text-black
+        bg-[#ffebcd] ${className}`}
+      placeholderTextColor="#000000a6"
     />
   );
 }

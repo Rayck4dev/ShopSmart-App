@@ -55,12 +55,8 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    setLoading(true);
-    const { error } = await supabase.auth.signOut();
-    setLoading(false);
-    if (error) return { error: error.message };
-    return {};
+    await supabase.auth.signOut();
   };
-  
+
   return { signUp, signIn, signOut, loading, user };
 }

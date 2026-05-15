@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Header() {
+export default function Header({ title, subtitle }: { title: string, subtitle: string }) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Minhas Listas</Text>
-        <Text style={styles.subtitle}>Organize suas compras</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
       </View>
     </View>
   );

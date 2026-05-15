@@ -12,7 +12,7 @@ export default function Button({ title, onPress, className, disabled }: ButtonPr
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`w-full bg-light-action dark:bg-dark-action 
+      className={`w-full bg-[#FB923C] 
         px-4 py-3 rounded-lg items-center ${disabled ? "opacity-50" : ""} ${className}`}
     >
       <Text className="text-white font-semibold">{title}</Text>
