@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
 type PaginationDotsProps = {
   total: number;
@@ -11,32 +11,15 @@ export default function PaginationDots({
   activeIndex,
 }: PaginationDotsProps) {
   return (
-    <View style={styles.dots}>
+    <View className="flex-row mt-5">
       {Array.from({ length: total }).map((_, index) => (
         <View
           key={index}
-          style={[styles.dot, activeIndex === index && styles.dotActive]}
+          className={`h-2.5 rounded-full mx-1.5 transition-all duration-300
+            ${activeIndex === index ? "w-6 bg-orange-500" : "w-2.5 bg-gray-300"}
+          `}
         />
       ))}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  dots: {
-    flexDirection: "row",
-    marginTop: 20,
-  },
-
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 10,
-    backgroundColor: "#D1D5DB",
-    marginHorizontal: 5,
-  },
-
-  dotActive: {
-    backgroundColor: "#06B6D4",
-  },
-});

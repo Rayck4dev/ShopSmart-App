@@ -1,22 +1,24 @@
+import { useEffect, useState } from "react";
+import { View, ActivityIndicator, Platform } from "react-native";
+import { Stack } from "expo-router";
 import { supabase } from "@/src/lib/supabaseClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Session } from "@supabase/supabase-js";
 import * as NavigationBar from "expo-navigation-bar";
-import { Redirect, Slot, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Platform, View } from "react-native";
 
 import "@/src/styles/global.css";
 import {
+  useFonts,
   Montserrat_400Regular,
   Montserrat_500Medium,
   Montserrat_600SemiBold,
   Montserrat_700Bold,
   Montserrat_800ExtraBold,
   Montserrat_900Black,
-  useFonts,
 } from "@expo-google-fonts/montserrat";
+
+import { useProtectedRoute } from "@/src/hooks/useProtectedRoute";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,7 +26,6 @@ export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null);
   const [introSeen, setIntroSeen] = useState<boolean | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  const segments = useSegments();
 
   const [fontsLoaded, fontError] = useFonts({
     Montserrat_400Regular,
@@ -35,42 +36,37 @@ export default function RootLayout() {
     Montserrat_900Black,
   });
 
+  useProtectedRoute(session, introSeen, loadingAuth, fontsLoaded);
+
   useEffect(() => {
-    async function configureNavigation() {
-      if (Platform.OS === "android") {
-        await NavigationBar.setBackgroundColorAsync("#F6F1EE");
-        await NavigationBar.setButtonStyleAsync("dark");
-        await NavigationBar.setBehaviorAsync("inset-touch");
-      }
+    if (Platform.OS === "android") {
+      NavigationBar.setBackgroundColorAsync("#F6F1EE");
+      NavigationBar.setButtonStyleAsync("dark");
     }
-    configureNavigation();
   }, []);
 
   useEffect(() => {
     const loadAppData = async () => {
       try {
         const {
-          data: { session },
+          data: { session: currentSession },
         } = await supabase.auth.getSession();
-        setSession(session);
-
+        setSession(currentSession);
         const value = await AsyncStorage.getItem("introSeen");
         setIntroSeen(value === "true");
       } catch (e) {
-        console.warn("Erro ao carregar dados iniciais:", e);
+        console.warn(e);
       } finally {
         setLoadingAuth(false);
       }
     };
-
     loadAppData();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
@@ -80,11 +76,7 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, fontError, loadingAuth]);
 
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
-  if (loadingAuth) {
+  if (loadingAuth || !fontsLoaded) {
     return (
       <View className="flex-1 justify-center items-center bg-[#F6F1EE]">
         <ActivityIndicator size="large" color="#FB923C" />
@@ -92,25 +84,11 @@ export default function RootLayout() {
     );
   }
 
-  const inAuthGroup = segments?.[0] === "(auth)";
-  const inIntroGroup = segments?.[0] === "(intro)";
-
-  if (!introSeen) {
-    if (!inIntroGroup) {
-      return <Redirect href="/(intro)/onboarding" />;
-    }
-    return <Slot />;
-  }
-
-  if (!session) {
-    if (!inAuthGroup) {
-      return <Redirect href="/(auth)/login" />;
-    }
-  } else {
-    if (inAuthGroup || inIntroGroup) {
-      return <Redirect href="/(tabs)/home" />;
-    }
-  }
-
-  return <Slot />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(intro)" options={{ headerShown: false }} />
+    </Stack>
+  );
 }

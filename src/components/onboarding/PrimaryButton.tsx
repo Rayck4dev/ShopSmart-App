@@ -1,37 +1,25 @@
 import React from "react";
-import { Pressable, Text, StyleSheet, ViewStyle } from "react-native";
+import { Pressable, Text } from "react-native";
 
 type PrimaryButtonProps = {
   title: string;
   onPress: () => void;
-  style?: ViewStyle;
+  className?: string; 
 };
 
 export default function PrimaryButton({
   title,
   onPress,
-  style,
+  className,
 }: PrimaryButtonProps) {
   return (
-    <Pressable style={[styles.button, style]} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+    <Pressable
+      onPress={onPress}
+      className={`bg-orange-500 py-4 px-10 rounded-[14px] items-center justify-center active:bg-orange-600 active:scale-[0.98] transition-transform ${className}`}
+    >
+      <Text className="text-white text-lg font-semibold tracking-wide">
+        {title}
+      </Text>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#ff7300",
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 14,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-});

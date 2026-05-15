@@ -1,47 +1,24 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 
-export default function Header({ title, subtitle }: { title: string, subtitle: string }) {
+interface HeaderProps {
+  title: string;
+  subtitle: string;
+}
+
+export default function Header({ title, subtitle }: HeaderProps) {
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
+    <View
+      className="bg-orange-500 pt-16 pb-8 rounded-b-[32px] shadow-lg shadow-black/10"
+      style={{ elevation: 6 }}
+    >
+      <View className="px-5">
+        <Text className="text-white text-3xl font-bold mt-1 mb-1 tracking-tight">
+          {title}
+        </Text>
+        <Text className="text-white/80 text-sm tracking-widest uppercase">
+          {subtitle}
+        </Text>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#FF7A00",
-    paddingTop: 64,
-    paddingBottom: 30,
-
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 6,
-  },
-
-  content: {
-    paddingHorizontal: 20,
-  },
-
-  subtitle: {
-    color: "rgba(255,255,255,0.8)",
-    fontSize: 13,
-    letterSpacing: 0.5,
-  },
-
-  title: {
-    color: "#FFF",
-    fontSize: 28,
-    fontWeight: "700",
-    marginTop: 4,
-    marginBottom: 4,
-    letterSpacing: 0.3,
-  },
-});

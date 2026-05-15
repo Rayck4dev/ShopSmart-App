@@ -58,7 +58,6 @@ export default function MyListsScreen() {
     fetchLists();
   }, []);
 
-  // Tela de Loading centralizada com NativeWind
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-background">
@@ -91,7 +90,6 @@ export default function MyListsScreen() {
               nome={item.name}
               itens={item.done}
               total={item.total}
-              // Ajustado para o padrão de rotas que você está usando (confirme se a pasta é listas ou (list))
               onPress={() => router.push(`/listas/${item.id}`)}
             />
           </View>

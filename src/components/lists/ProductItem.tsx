@@ -1,26 +1,44 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export function ProductItem({
-  item,
-  onToggle,
-}: {
-  item: any;
+interface ProductItemProps {
+  item: {
+    title: string;
+    quantity: number;
+    price: number;
+    done: boolean;
+  };
   onToggle: () => void;
-}) {
+}
+
+export function ProductItem({ item, onToggle }: ProductItemProps) {
   return (
     <TouchableOpacity
-      style={[styles.card, item.done && styles.cardDone]}
+      className={`flex-row items-center p-4 rounded-[20px] mb-3 shadow-sm
+        ${item.done ? "bg-gray-100 opacity-60" : "bg-white"}
+      `}
+      style={{ elevation: 2 }}
       onPress={onToggle}
+      activeOpacity={0.7}
     >
-      <View style={[styles.checkCircle, item.done && styles.checkActive]}>
+      <View
+        className={`w-[26px] h-[26px] rounded-full border-2 items-center justify-center mr-[15px]
+          ${item.done ? "bg-orange-500 border-orange-500" : "border-orange-500"}
+        `}
+      >
         {item.done && <Ionicons name="checkmark" size={16} color="white" />}
       </View>
-      <View style={{ flex: 1 }}>
-        <Text style={[styles.title, item.done && styles.textDone]}>
+
+      <View className="flex-1">
+        <Text
+          className={`text-base font-bold
+            ${item.done ? "text-gray-400 line-through" : "text-[#1F1F1F]"}
+          `}
+        >
           {item.title}
         </Text>
-        <Text style={styles.subtitle}>
+
+        <Text className="text-xs text-gray-500 mt-0.5">
           Qtd: {item.quantity} •{" "}
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
@@ -31,30 +49,3 @@ export function ProductItem({
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 20,
-    marginBottom: 12,
-    elevation: 2,
-  },
-  cardDone: { opacity: 0.6, backgroundColor: "#F1F1F1" },
-  checkCircle: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    borderWidth: 2,
-    borderColor: "#FF7A00",
-    marginRight: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkActive: { backgroundColor: "#FF7A00" },
-  title: { fontSize: 16, fontWeight: "700", color: "#1F1F1F" },
-  textDone: { textDecorationLine: "line-through", color: "#999" },
-  subtitle: { fontSize: 13, color: "#666", marginTop: 2 },
-});
