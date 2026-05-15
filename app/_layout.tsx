@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { View, ActivityIndicator, Platform } from "react-native";
 import { Stack } from "expo-router";
-import { supabase } from "@/src/lib/supabaseClient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import type { Session } from "@supabase/supabase-js";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 
 import "@/src/styles/global.css";
 import {
@@ -18,14 +15,13 @@ import {
   Montserrat_900Black,
 } from "@expo-google-fonts/montserrat";
 
+import { AuthProvider, useAuth } from "@/src/context/AuthContext";
 import { useProtectedRoute } from "@/src/hooks/useProtectedRoute";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const [session, setSession] = useState<Session | null>(null);
-  const [introSeen, setIntroSeen] = useState<boolean | null>(null);
-  const [loadingAuth, setLoadingAuth] = useState(true);
+function LayoutContent() {
+  const { session, introSeen, loadingAuth } = useAuth();
 
   const [fontsLoaded, fontError] = useFonts({
     Montserrat_400Regular,
@@ -37,38 +33,6 @@ export default function RootLayout() {
   });
 
   useProtectedRoute(session, introSeen, loadingAuth, fontsLoaded);
-
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      NavigationBar.setBackgroundColorAsync("#F6F1EE");
-      NavigationBar.setButtonStyleAsync("dark");
-    }
-  }, []);
-
-  useEffect(() => {
-    const loadAppData = async () => {
-      try {
-        const {
-          data: { session: currentSession },
-        } = await supabase.auth.getSession();
-        setSession(currentSession);
-        const value = await AsyncStorage.getItem("introSeen");
-        setIntroSeen(value === "true");
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setLoadingAuth(false);
-      }
-    };
-    loadAppData();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
 
   useEffect(() => {
     if ((fontsLoaded || fontError) && !loadingAuth) {
@@ -90,5 +54,20 @@ export default function RootLayout() {
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(intro)" options={{ headerShown: false }} />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      NavigationBar.setBackgroundColorAsync("#F6F1EE");
+      NavigationBar.setButtonStyleAsync("dark");
+    }
+  }, []);
+
+  return (
+    <AuthProvider>
+      <LayoutContent />
+    </AuthProvider>
   );
 }

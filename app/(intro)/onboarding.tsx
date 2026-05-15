@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import OnboardingSlide from "@/src/components/onboarding/OnboardingSlide";
 import PaginationDots from "@/src/components/onboarding/PaginationDots";
 import PrimaryButton from "@/src/components/onboarding/PrimaryButton";
-
+import { useAuth } from "@/src/context/AuthContext"; 
 const screens = [
   {
     title: "Crie suas listas",
@@ -31,37 +30,42 @@ const screens = [
 
 export default function Onboarding() {
   const router = useRouter();
+  const { finishOnboarding } = useAuth();
   const [step, setStep] = useState(0);
 
   async function next() {
     if (step < screens.length - 1) {
       setStep(step + 1);
     } else {
-      await AsyncStorage.setItem("introSeen", "true");
-      router.replace("/(auth)/login");
+      try {
+        await finishOnboarding();
+
+        router.replace("/(auth)/login");
+      } catch (error) {
+        console.error("Erro ao finalizar onboarding:", error);
+      }
     }
   }
 
   return (
-    <LinearGradient
-      colors={["#f9bf10", "#F6F1EE"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      className="flex-1 items-center justify-center px-[30px]"
-    >
-      <OnboardingSlide
-        title={screens[step].title}
-        subtitle={screens[step].subtitle}
-        image={screens[step].image}
-      />
+    <LinearGradient colors={["#f9bf10", "#F6F1EE"]} className="flex-1">
+      <SafeAreaView className="flex-1 items-center justify-between py-10 px-[30px]">
+        <View className="flex-1 justify-center w-full">
+          <OnboardingSlide
+            title={screens[step].title}
+            subtitle={screens[step].subtitle}
+            image={screens[step].image}
+          />
+        </View>
 
-      <View className="w-full mt-10">
-        <PrimaryButton title={screens[step].button} onPress={next} />
-      </View>
+        <View className="w-full items-center">
+          <View className="w-full items-center mb-6">
+            <PrimaryButton title={screens[step].button} onPress={next} />
+          </View>
 
-      <View className="mt-8">
-        <PaginationDots total={screens.length} activeIndex={step} />
-      </View>
+          <PaginationDots total={screens.length} activeIndex={step} />
+        </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 }

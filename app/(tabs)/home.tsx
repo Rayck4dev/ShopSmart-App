@@ -11,7 +11,7 @@ import { useFocusEffect } from "expo-router";
 
 import HomeHeader from "@/src/components/home/HomeHeader";
 import HomeCard from "@/src/components/home/HomeCard";
-import { LocationMapCard } from "@/src/components/home/LocationCard";
+// import { LocationMapCard } from "@/src/components/home/LocationCard";
 import { GamificationCard } from "@/src/components/profile/GamificationCard";
 
 export default function HomeScreen() {
@@ -140,13 +140,13 @@ export default function HomeScreen() {
               Encontre os supermercados perto de você
             </Text>
           </View>
-
+{/* 
           <LocationMapCard
             address={address}
             location={coords}
             loading={loadingLoc}
             onGetLocation={handleGetLocation}
-          />
+          /> */}
         </View>
       </ScrollView>
     </View>
