@@ -108,7 +108,7 @@ export default function AddScreen() {
             className="h-16 w-full"
           />
 
-          <View className="bg-white pb-16 px-6 pt-2 pointer-events-auto shadow-[0_-15px_30px_rgba(0,0,0,0.03)]">
+          <View className="bg-white pb-28 px-6 pt-2 pointer-events-auto shadow-[0_-15px_30px_rgba(0,0,0,0.03)]">
             <TouchableOpacity
               disabled={
                 !state.creatingListName.trim() ||

@@ -23,7 +23,7 @@ export function LocationMapCard({
           <MapView
             provider={PROVIDER_GOOGLE}
             className="w-full h-full"
-            initialRegion={{
+            region={{
               latitude: location.latitude,
               longitude: location.longitude,
               latitudeDelta: 0.005,
@@ -38,7 +38,7 @@ export function LocationMapCard({
           <View className="flex-1 items-center justify-center p-5">
             <MapPin color="#9ca3af" size={32} />
             <Text className="text-gray-400 text-center mt-2 text-xs">
-              Mapa será exibido após encontrar sua localização
+              O mapa será exibido após encontrar sua localização
             </Text>
           </View>
         )}
@@ -53,8 +53,13 @@ export function LocationMapCard({
             <Text className="text-gray-400 text-[10px] font-bold uppercase">
               Mercado Atual
             </Text>
+
             <Text className="text-gray-800 font-bold" numberOfLines={1}>
-              {address || "Localização não definida"}
+              {address
+                ? address
+                : location
+                  ? `Lat: ${location.latitude.toFixed(4)}, Lng: ${location.longitude.toFixed(4)}`
+                  : "Localização não definida"}
             </Text>
           </View>
         </View>
@@ -70,7 +75,7 @@ export function LocationMapCard({
             <>
               <Navigation color="#fff" size={18} />
               <Text className="ml-2 text-white font-bold">
-                {address ? "Atualizar Localização" : "Buscar Localização"}
+                {location ? "Atualizar Localização" : "Buscar Localização"}
               </Text>
             </>
           )}
