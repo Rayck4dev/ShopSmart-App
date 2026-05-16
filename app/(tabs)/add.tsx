@@ -14,6 +14,8 @@ import ListNameInput from "@/src/components/lists/ListNameInput";
 import PreviewList from "@/src/components/lists/PreviewList";
 import FinalizeModal from "@/src/components/lists/FinalizeModal";
 
+import { LinearGradient } from "expo-linear-gradient";
+
 export default function AddScreen() {
   const { state, actions } = useAddScreen();
   const [finalized, setFinalized] = useState(false);
@@ -96,22 +98,36 @@ export default function AddScreen() {
           contentContainerStyle={{ paddingBottom: 180 }}
         />
 
-        <View className="absolute bottom-0 left-0 right-0 p-6 bg-white border-t border-gray-100 shadow-lg">
-          <TouchableOpacity
-            disabled={
-              !state.creatingListName.trim() || state.previewItems.length === 0
-            }
-            onPress={() => setFinalized(true)}
-            className={`py-4 rounded-2xl items-center ${
-              !state.creatingListName.trim() || state.previewItems.length === 0
-                ? "bg-gray-300"
-                : "bg-orange-500"
-            }`}
-          >
-            <Text className="text-white font-bold text-lg">
-              Finalizar Lista
-            </Text>
-          </TouchableOpacity>
+        <View className="absolute bottom-0 left-0 right-0 pointer-events-none">
+          <LinearGradient
+            colors={[
+              "rgba(255, 255, 255, 0)",
+              "rgba(255, 255, 255, 0.8)",
+              "#FFFFFF",
+            ]}
+            className="h-16 w-full"
+          />
+
+          <View className="bg-white pb-16 px-6 pt-2 pointer-events-auto shadow-[0_-15px_30px_rgba(0,0,0,0.03)]">
+            <TouchableOpacity
+              disabled={
+                !state.creatingListName.trim() ||
+                state.previewItems.length === 0
+              }
+              onPress={() => setFinalized(true)}
+              activeOpacity={0.8}
+              className={`py-4 rounded-2xl items-center shadow-sm active:scale-[0.99] ${
+                !state.creatingListName.trim() ||
+                state.previewItems.length === 0
+                  ? "bg-gray-300"
+                  : "bg-orange-500"
+              }`}
+            >
+              <Text className="text-white font-bold text-lg">
+                Finalizar Lista
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAvoidingView>
 
